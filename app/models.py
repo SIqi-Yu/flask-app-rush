@@ -5,10 +5,16 @@ Copyright (c) 2019 - present AppSeed.us
 
 from app import db
 
-class Profiles(db.Model):
-    uid = db.Column(db.Integer, primary_key=True)
-    uname = db.Column(db.String(50), nullable=False)
-    upass = db.Column(db.String(50), nullable=False)
+class membership(db.Model):
+    MSID = db.Column(db.Integer, primary_key=True)
+    MEID = db.Column(db.Integer, nullable=False)
+    StartDate = db.Column(db.Date, nullable=False)
+    EndDate = db.Column(db.Date, nullable=False)
+    InvoiceDate = db.Column(db.Date, nullable=False)
+    DueDate = db.Column(db.Date, nullable=False)
+    Amount = db.Column(db.Float,nullable=False)
+    PaidDate = db.Column(db.Date, nullable=False)
+    
 
 # class Stats(db.Model):
 
