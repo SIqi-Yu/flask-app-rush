@@ -4,7 +4,7 @@ Copyright (c) 2019 - present AppSeed.us
 """
 
 # Flask modules
-from flask   import render_template, request, redirect, url_for, flash, session
+from flask   import render_template,json,request, redirect, url_for, flash, session
 from jinja2  import TemplateNotFound
 
 # App modules
@@ -24,8 +24,8 @@ def about1():
     
     return render_template('MScreate.html')
 
-@app.route("/MembershipCreate",methods=['GET','POST'])
-def MembershipCreate():
+@app.route("/membershipCreate",methods=['GET','POST'])
+def membershipCreate():
     msid = request.form.get('msid')
     meid = request.form.get('meid')
     startdate = request.form.get('startdate')
@@ -59,8 +59,7 @@ def MembershipCreate():
         flash("The paiddate is required")
         error=True
         
-    
-    
+
     if not error:
         if not msid:
             # create a new membership in database
@@ -92,12 +91,29 @@ def MembershipCreate():
 
 @app.route("/q4.2")
 def about2():
+
     
     return render_template('MSsearch.html')
 
 @app.route("/MembershipSearch",methods=['GET','POST'])
 def MembershipSearch():
+
+    msid = request.form.get('msid')
+    meid = request.form.get('meid')
+    MEMbership = membership.query.get(msid)
     error =False
+    if not msid :
+        flash("The Membership ID is required")
+        error=True
+    else:
+        if not MEMbership:
+            flash("The Membership ID is not existed")
+            error=True
     
+    if not error:
+        gridData = MEMbership
+        #gridData = json.dumps(gridData)
+        return render_template("MSgraph1.html",gridData = gridData)
     
-    return render_template('MSsearch.html')
+    else:
+        return render_template('MSsearch.html',error=error)
