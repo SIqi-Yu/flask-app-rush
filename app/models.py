@@ -5,6 +5,7 @@ Copyright (c) 2019 - present AppSeed.us
 
 from app import db
 
+
 class Member(db.Model):
     MEID = db.Column(db.Integer, primary_key=True)
     FirstName = db.Column(db.String(50), nullable=False)
@@ -29,6 +30,18 @@ class Tmatch(db.Model):
     CID = db.Column(db.Integer, nullable=False)
     WinnerMEID = db.Column(db.Integer, nullable=False)
     LoserMEID = db.Column(db.Integer, nullable=False)
+
+class membership(db.Model):
+    MSID = db.Column(db.Integer, primary_key=True)
+    MEID = db.Column(db.Integer, nullable=False)
+    StartDate = db.Column(db.Date, nullable=False)
+    EndDate = db.Column(db.Date, nullable=False)
+    InvoiceDate = db.Column(db.Date, nullable=False)
+    DueDate = db.Column(db.Date, nullable=False)
+    Amount = db.Column(db.Float,nullable=False)
+    PaidDate = db.Column(db.Date, nullable=False)
+    
+
 
 # class Stats(db.Model):
 

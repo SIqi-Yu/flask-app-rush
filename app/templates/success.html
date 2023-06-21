@@ -1,0 +1,35 @@
+{%extends "layouts/base.html"%}
+
+{% block title %}Membership Search{% endblock title %} 
+
+
+{% block content %}
+<main id="main">
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+          <!--jinjia-->
+          {%with messages = get_flashed_messages()%}
+            {% if messages %}
+            <ul>
+              {%for message in messages%}
+              <li>{{message}}</li>
+              {% endfor %}
+            </ul>
+            {%endif%}
+          {%endwith%}
+
+          <div class="btn-group">
+            <a href={{url_for('MembershipSearch')}} class="btn btn-primary active" aria-current="page">Membership Search</a>
+            <a href={{url_for('membershipCreate')}} class="btn btn-primary">Membership Create</a>
+            <a href={{url_for("MSbase")}} class="btn btn-primary">MSbase</a>
+        </div>
+        </div>
+      </section>
+ 
+
+
+  </main><!-- End #main -->
+{% endblock content %}

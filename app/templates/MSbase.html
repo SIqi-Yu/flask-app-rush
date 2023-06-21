@@ -1,0 +1,57 @@
+{% extends 'layouts/base.html'%}
+{% block title%}address challenge{% endblock title %}
+{%block content%}
+
+<main id="main">
+
+  <!-- ======= Breadcrumbs ======= -->
+  <section id="breadcrumbs" class="breadcrumbs">
+    <div class="container">
+
+      <ol>
+        <li><a href="index.html">Home</a></li>
+        <li>Challenge</li>
+      </ol>
+      <h2>Challenge</h2>
+
+    </div>
+  </section><!-- End Breadcrumbs -->
+  <br>
+  <br>
+  <br>
+
+  <section class="inner-page">
+    <div class="container">
+       <h5> Good {{ greeting }}! {{session['meid']}}. Here you are able to deal with your challenge information.</h5> 
+      {% with messages = get_flashed_messages() %}
+        <ul>
+        {% for message in messages %}
+          <li>{{message}}</li>
+        {% endfor %}
+        </ul>
+      {% endwith %}
+    </div>
+  </section>
+  <br>
+  <br>
+  <br>
+  <section class="inner-page">
+    <div class="container">
+        <div class="btn-group">
+            <a href={{url_for('MSsearch')}} class="btn btn-primary active" aria-current="page">MembershipSearch</a>
+            <a href={{url_for('MScreate')}} class="btn btn-primary">MembershipCreate</a>
+            <a href={{url_for("membership_chart",year=2023)}} class="btn btn-primary">graph</a>
+        </div>
+        
+    </div>
+  </section>
+
+</main><!-- End #main -->
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+{%endblock content%}

@@ -1,0 +1,52 @@
+
+{% extends "layouts/base.html" %}
+
+{% block title %}Invoice Display{% endblock title %}
+
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Membership Chart</title>
+    <script src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js"></script>
+    <script src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js"></script>
+    <script>
+        FusionCharts.ready(function () {
+            var chartConfig = {
+                type: "pie2d",
+                renderAt: "chart-container",
+                width: "600",
+                height: "400",
+                dataFormat: "json",
+                dataSource: {{ chart_data|safe }}
+            };
+
+            var chart = new FusionCharts(chartConfig);
+            chart.render();
+        });
+    </script>
+</head>
+<body>
+  <br>
+  <br>
+  <br>
+  <h2>Membership Chart for Year {{ year }}</h2>
+    <div id="chart-container"></div>
+
+    </div>
+              <!--jinjia-->
+              {%with messages = get_flashed_messages()%}
+              {% if messages %}
+              <ul>
+                {%for message in messages%}
+                <li>{{message}}</li>
+                {% endfor %}
+              </ul>
+              {%endif%}
+            {%endwith%}
+  
+  </div>
+
+</body>
+</html>
+{% endblock content %}

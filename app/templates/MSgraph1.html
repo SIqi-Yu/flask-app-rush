@@ -1,0 +1,104 @@
+
+{% extends "layouts/base.html" %}
+
+{% block title %}Invoice Display{% endblock title %}
+
+{% block content %}
+  <style>
+    /* Custom CSS for the invoice layout */
+    .invoice-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+    }
+
+    .invoice-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .invoice-table {
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    .invoice-table th,
+    .invoice-table td {
+      padding: 10px;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .invoice-total {
+      text-align: right;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+
+  
+    <main id="main">
+
+      <section class="inner-page">
+
+          <div class="container">
+            <br>
+            <br>
+            <br>
+            <br>
+
+            <div class="invoice-container">
+              <h1 class="invoice-header">Invoice</h1>
+          
+              <table class="invoice-table">
+                <thead>
+                  <tr>
+                    <th>MSID</th>
+                    <th>MEID</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Invoice Date</th>
+                    <th>Due Date</th>
+                    <th>Amount</th>
+                    <th>Paid Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+          
+                    <tr>
+                      <td>{{ gridData}}</td>
+                      <td>{{ gridData.MEID }}</td>
+                      <td>{{ gridData.StartDate }}</td>
+                      <td>{{ gridData.EndDate }}</td>
+                      <td>{{ gridData.InvoiceDate }}</td>
+                      <td>{{ gridData.DueDate }}</td>
+                      <td>{{ gridData.Amount }}</td>
+                      <td>{{ gridData.PaidDate }}</td>
+                    </tr>
+          
+                </tbody>
+              </table>
+          
+            <form method="post" action="{{url_for('MembershipDelete')}}">
+
+  
+              <button type="submit" class="btn btn-primary">Delete</button>
+            </form>
+
+    <div class="invoice-total">
+      Total: 1 records
+
+    </div>
+              <!--jinjia-->
+              {%with messages = get_flashed_messages()%}
+              {% if messages %}
+              <ul>
+                {%for message in messages%}
+                <li>{{message}}</li>
+                {% endfor %}
+              </ul>
+              {%endif%}
+            {%endwith%}
+  
+  </div>
+{% endblock content %}

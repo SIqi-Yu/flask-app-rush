@@ -1,0 +1,94 @@
+{%extends "layouts/base.html"%}
+
+{% block title %}Membership create and modify{% endblock title %} 
+
+
+{% block content %}
+<main id="main">
+
+    <section class="inner-page">
+        <div class="container">
+          <br>
+          <br>
+          <br>
+          <br>
+
+          <form method="post" action="{{url_for('membershipCreate')}}">
+            
+            <div class="row mb-3">
+              <label for="inputPID" class="col-sm-2 col-form-label">Membership ID</label>
+              <div class="col-sm-10">
+                <input type="number" class="form-control" id="memsid" name="msid" value="{{MSID}}">
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <label for="inputName" class="col-sm-2 col-form-label">Member ID</label>
+              <div class="col-sm-10">
+                <input type="number" class="form-control" id="memid" name="meid" value="{{MEID}}">
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <label for="inputName" class="col-sm-2 col-form-label">Start Date</label>
+              <div class="col-sm-10">
+                <input type="date" class="form-control" id="startdate" name="startdate" value="{{STARTDATE}}">
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <label for="inputName" class="col-sm-2 col-form-label">End Date</label>
+              <div class="col-sm-10">
+                <input type="date" class="form-control" id="enddate" name="enddate" value="{{ENDDATE}}">
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <label for="inputName" class="col-sm-2 col-form-label">Invoice Date</label>
+              <div class="col-sm-10">
+                <input type="date" class="form-control" id="indate" name="indate" value="{{INDATE}}">
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <label for="inputName" class="col-sm-2 col-form-label">Due Date</label>
+              <div class="col-sm-10">
+                <input type="date" class="form-control" id="duedate" name="duedate" value="{{DUEDATE}}">
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <label for="inputPID" class="col-sm-2 col-form-label">Amount</label>
+              <div class="col-sm-10">
+                <input type="number" class="form-control" id="amount" name="amount" value="{{AMOUNT}}">
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <label for="inputdate" class="col-sm-2 col-form-label">Paid Date</label>
+              <div class="col-sm-10">
+                <input type="date" class="form-control" id="paiddate" name="paiddate" value="{{PAIDDATE}}">
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+
+          <!--jinjia-->
+          {%with messages = get_flashed_messages()%}
+            {% if messages %}
+            <ul>
+              {%for message in messages%}
+              <li>{{message}}</li>
+              {% endfor %}
+            </ul>
+            {%endif%}
+          {%endwith%}
+
+        </div>
+      </section>
+ 
+
+
+  </main><!-- End #main -->
+{% endblock content %}
