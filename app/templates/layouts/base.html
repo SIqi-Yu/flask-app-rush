@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>eStartup Bootstrap Template - Index</title>
+  <title>Tennis Club</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -42,13 +42,16 @@
     <div class="container d-flex align-items-center justify-content-between">
 
       <div id="logo">
-        <h1><a href="index.html"><span>e</span>Startup</a></h1>
+        <h1><a href="index.html"><span>Tennis</span>Club</a></h1>
         <!-- Uncomment below if you prefer to use an image logo -->
         <!-- <a href="index.html"><img src="/static/assets/img/logo.png" alt="" title="" /></a>-->
       </div>
 
       <nav id="navbar" class="navbar">
         <ul>
+
+          <li class="dropdown"><a href="#"><span>Individual Info</span> <i class="bi bi-chevron-down"></i></a>
+
           <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
           <li><a class="nav-link scrollto" href="#about-us">Player Profile</a></li>
           <li><a class="nav-link scrollto" href="#features">Challenge</a></li>
@@ -56,20 +59,21 @@
           <li><a href={{url_for("MSbase")}} class="nav-link scrollto" href="#team">Membership</a></li>
 
           <li class="dropdown"><a href="#"><span>Drop Down</span> <i class="bi bi-chevron-down"></i></a>
+
             <ul>
-              <li><a href="#">Drop Down 1</a></li>
-              <li class="dropdown"><a href="#"><span>Deep Drop Down</span> <i class="bi bi-chevron-right"></i></a>
-                <ul>
-                  <li><a href="#">Deep Drop Down 1</a></li>
-                  <li><a href="#">Deep Drop Down 2</a></li>
-                  <li><a href="#">Deep Drop Down 3</a></li>
-                  <li><a href="#">Deep Drop Down 4</a></li>
-                  <li><a href="#">Deep Drop Down 5</a></li>
-                </ul>
-              </li>
-              <li><a href="#">Drop Down 2</a></li>
-              <li><a href="#">Drop Down 3</a></li>
-              <li><a href="#">Drop Down 4</a></li>
+              <li><a href={{url_for('q1register')}}>Register</a></li>
+              <li><a href={{url_for('q1login')}}>Log in</a></li>
+              <li><a href={{url_for('q1modify')}}>Modify individual info</a></li>
+              <li><a href={{url_for('q1delete')}}>Delete individual info</a></li>
+              <li><a href={{url_for('q1charts')}}>check individual info charts</a></li>
+            </ul>
+          </li>
+          <li class="dropdown"><a href="#"><span>Challenge</span> <i class="bi bi-chevron-down"></i></a>
+            <ul>
+              <li><a href={{url_for('q1login')}}>Check all challenge</a></li>
+              <li><a href={{url_for('q1login')}}>Create/Modify Challenge</a></li>
+              <li><a href={{url_for('q1login')}}>Address challenge request</a></li>
+              <li><a href={{url_for('q1login')}}>Check win/loss charts</a></li>
             </ul>
           </li>
           <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
@@ -91,8 +95,8 @@
         <div class="col-md-12 col-lg-4">
           <div class="footer-logo">
 
-            <a class="navbar-brand" href="#">eStartup</a>
-            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the.</p>
+            <a class="navbar-brand" href="#">Tennis Club</a>
+            <p>Our company is committed to providing users with a tennis communication platform.</p>
 
           </div>
         </div>
@@ -100,13 +104,14 @@
         <div class="col-sm-6 col-md-3 col-lg-2">
           <div class="list-menu">
 
-            <h4>Abou Us</h4>
+            <h4>Individual information</h4>
 
             <ul class="list-unstyled">
-              <li><a href="#">About us</a></li>
-              <li><a href="#">Features item</a></li>
-              <li><a href="#">Live streaming</a></li>
-              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Register</a></li>
+              <li><a href="#">Log in</a></li>
+              <li><a href="#">Modify</a></li>
+              <li><a href="#">Delete</a></li>
+              <li><a href="#">Member charts</a></li>
             </ul>
 
           </div>
@@ -115,43 +120,14 @@
         <div class="col-sm-6 col-md-3 col-lg-2">
           <div class="list-menu">
 
-            <h4>Abou Us</h4>
+            <h4>Challenge information</h4>
 
             <ul class="list-unstyled">
-              <li><a href="#">About us</a></li>
-              <li><a href="#">Features item</a></li>
-              <li><a href="#">Live streaming</a></li>
-              <li><a href="#">Privacy Policy</a></li>
-            </ul>
-
-          </div>
-        </div>
-
-        <div class="col-sm-6 col-md-3 col-lg-2">
-          <div class="list-menu">
-
-            <h4>Support</h4>
-
-            <ul class="list-unstyled">
-              <li><a href="#">faq</a></li>
-              <li><a href="#">Editor help</a></li>
-              <li><a href="#">Contact us</a></li>
-              <li><a href="#">Privacy Policy</a></li>
-            </ul>
-
-          </div>
-        </div>
-
-        <div class="col-sm-6 col-md-3 col-lg-2">
-          <div class="list-menu">
-
-            <h4>Abou Us</h4>
-
-            <ul class="list-unstyled">
-              <li><a href="#">About us</a></li>
-              <li><a href="#">Features item</a></li>
-              <li><a href="#">Live streaming</a></li>
-              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Create/Modify challenge</a></li>
+              <li><a href="#">Accept/Delete challenge</a></li>
+              <li><a href="#">Check win/loss charts</a></li>
+              <li><a href="#">Delete</a></li>
+              <li><a href="#">Member charts</a></li>
             </ul>
 
           </div>
@@ -162,7 +138,7 @@
 
     <div class="copyrights">
       <div class="container">
-        <p>&copy; Copyrights eStartup. All rights reserved.</p>
+        <p>&copy; Copyrights belong to Group4 members.</p>
         <div class="credits">
           <!--
           All the links in the footer should remain intact.

@@ -1,0 +1,88 @@
+{% extends 'layouts/base.html'%}
+{% block title%}Create or modify challenges{% endblock title %}
+{% block stylesheets %}{% endblock stylesheets %}
+{%block content%}
+<main id="main">
+  <section id="breadcrumbs" class="breadcrumbs">
+    <div class="container">
+
+      <ol>
+        <li><a href="index.html">Home</a></li>
+        <li>Challenge</li>
+      </ol>
+      <h2>Challenge</h2>
+
+    </div>
+  </section><!-- End Breadcrumbs -->
+  <br>
+
+  <section class="inner-page">
+    <div class="container">
+      <div class="container">
+        <nav id="navbar" class="navbar bg-light">
+          <ul>
+            <li><a class="nav-link scrollto active" href={{url_for('create')}}>create a new challenge</a></li>
+            <li><a class="nav-link scrollto" href={{url_for('address')}}>address challenge</a></li>
+            <li><a class="nav-link scrollto" href={{url_for('graph')}}>Check your win percentage</a></li>
+          </ul>
+        </nav>
+      </div>
+      <br>
+      <br>
+      <form method="post" action="{{url_for('challengeFormSubmit')}}">
+        <br>
+        <div class="row mb-3">
+          <label for="ProductID" class="col-sm-2 col-form-label">Create CID:</label>
+          <div class="col-sm-10">
+            <input type="number" name='cid' class="form-control" id="cid" name="cid" value="{{cid}}">
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label for="challengerID" class="col-sm-2 col-form-label">Your MEID(Challenger MEID):</label>
+          <div class="col-sm-10">
+            <input type="number" name='challengerID' class="form-control" id="challengerID" name="challengerID" value="{{challengerID}}">
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label for="challengedID" class="col-sm-2 col-form-label">Challenged MEID</label>
+          <div class="col-sm-10">
+            <input type="number" name='challengedID' class="form-control" id="challengedID" value="{{challengedID}}">
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label for="date" class="col-sm-2 col-form-label">Date of Challenge</label>
+          <div class="col-sm-10">
+            <input type="date" name='date' class="form-control" id="date" value="{{date}}">
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label for="note" class="col-sm-2 col-form-label">Your Notes:</label>
+          <div class="col-sm-10">
+            <input type="text" name='note' class="form-control" id="note" value="{{note}}">
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Confirm</button>
+      </form>
+      {% with messages = get_flashed_messages() %}
+        <ul>
+        {% for message in messages %}
+          <li>{{message}}</li>
+        {% endfor %}
+        </ul>
+      {% endwith %}
+    </div>
+  </section>
+</main>
+<br>
+<br>
+<br>
+<br>
+
+{%endblock content%}
+
+
+

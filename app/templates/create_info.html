@@ -1,0 +1,56 @@
+{% extends 'layouts/base.html'%}
+{% block title%}challenge_info{% endblock title %}
+{%block content%}
+<main id="main">
+  <section id="breadcrumbs" class="breadcrumbs">
+    <div class="container">
+
+      <ol>
+        <li><a href="index.html">Home</a></li>
+        <li>Challenge</li>
+      </ol>
+      <h2>Challenge</h2>
+
+    </div>
+  </section><!-- End Breadcrumbs -->
+  <br>
+  <br>
+  <br>
+
+  <section class="inner-page">
+    <div class="container">
+      you create a new challenge, here is the information:
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">CID</th>
+            <th scope="col">Your MEID(challengerID)</th>
+            <th scope="col">Challenged ID</th>
+            <th scope="col">Challenge Dste</th>
+            <th scope="col">Note</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{challenge.CID}}</td>
+            <td>{{challenge.ChallengerMEID}}</td>
+            <td>{{challenge.ChallengedMEID}}</td>
+            <td>{{challenge.DateOfChallende}}</td>
+            <td>{{challenge.Notes}}</td>
+          </tr>
+        </tbody>
+      </table>
+      {% with messages = get_flashed_messages() %}
+        <ul>
+        {% for message in messages %}
+          <li>{{message}}</li>
+        {% endfor %}
+        </ul>
+      {% endwith %}
+    </div>
+  </section>
+
+</main><!-- End #main -->
+
+
+{%endblock content%}

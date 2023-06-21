@@ -1,0 +1,80 @@
+{% extends 'layouts/base.html'%}
+{% block title%}afterregister{% endblock title %}
+{%block content%}
+
+<!-- can use inner-page to create a new page and instead <p> elements -->
+
+<main id="main">
+  <section id="breadcrumbs" class="breadcrumbs">
+    <div class="container">
+
+      <ol>
+        <li><a href="index.html">Home</a></li>
+        <li>Login Page</li>
+      </ol>
+      <h2>Login Page</h2>
+      <br>
+      <nav id="navbar" class="navbar bg-light">
+        <ul>
+          <li><a class="nav-link scrollto active" href={{url_for('q1register')}}>Register</a></li>
+          <li><a class="nav-link scrollto" href={{url_for('q1login')}}>Log in</a></li>
+          <li><a class="nav-link scrollto" href={{url_for('q1modify')}}>Modify your information</a></li>
+          <li><a class="nav-link scrollto" href={{url_for('q1delete')}}>Delete your information</a></li>
+          <li><a class="nav-link scrollto" href={{url_for('q1charts')}}>visualize the number of club members</a></li>
+        </ul>
+      </nav>
+      <br>
+    </div>
+  </section>
+
+  <section class="inner-page">
+    <div class="container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope='col'>MEID</th>
+            <th scope="col">FirstName</th>
+            <th scope="col">LastName</th>
+            <th scope="col">Email</th>
+            <th scope="col">Password</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Age</th>
+            <th scope="col">Gender</th>
+            <th scope="col">UTR</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{membership.MEID}}</td>
+            <td>{{membership.FirstName}}</td>
+            <td>{{membership.LastName}}</td>
+            <td>{{membership.Email}}</td>
+            <td>{{membership.MPassword}}</td>
+            <td>{{membership.Phone}}</td>
+            <td>{{membership.Age}}</td>
+            <td>{{membership.Gender}}</td>
+            <td>{{membership.UTR}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+      <h3><mark>Notice that:after registering, please click log in button to use some function!</mark></h3>
+      <br>
+      <div class="d-grid gap-2 col-6 mx-auto">
+        <a href={{url_for('q1login')}} class="btn btn-primary me-md-2">Log in</a>
+      </div>
+      {% with messages = get_flashed_messages() %} <!-- function: flash显示的message储存在message里 -->
+      <ul>
+      {% for message in messages %} <!-- 将每一个message放在unorder list里面 -->
+        <li>{{message}}</li>
+      {% endfor %}
+      </ul>
+    {% endwith %}
+    </div>
+  </section>
+
+</main><!-- End #main -->
+<br>
+<br>
+
+{%endblock content%}
