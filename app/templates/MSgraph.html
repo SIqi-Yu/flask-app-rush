@@ -29,23 +29,41 @@
 <body>
   <br>
   <br>
-  <br>
-  <h2>Membership Chart for Year {{ year }}</h2>
-    <div id="chart-container"></div>
+  <section id="breadcrumbs" class="breadcrumbs">
+    <div class="container">
+      <ol>
+        <li><a href="index.html">Home</a></li>
+        <li>Membership</li>
+      </ol>
+      <h2>Membership</h2>
+      <br>
+      <br>
+      <nav id="navbar" class="navbar bg-light">
+        <ul>
+          <li><a class="nav-link scrollto active" href={{url_for('MSsearch')}}>MembershipSearch</a></li>
+          <li><a class="nav-link scrollto" href={{url_for('MScreate')}}>MembershipCreate</a></li>
+          <li><a class="nav-link scrollto" href={{url_for("membership_chart",year=2023)}}>graph</a></li>
+        </ul>
+      </nav>
+      <br>
+      <h2>Membership Chart for Year {{ year }}</h2>
+       <div id="chart-container"></div>
+
+      <!--jinjia-->
+      {%with messages = get_flashed_messages()%}
+      {% if messages %}
+      <ul>
+        {%for message in messages%}
+        <li>{{message}}</li>
+        {% endfor %}
+      </ul>
+      {%endif%}
+    {%endwith%}
 
     </div>
-              <!--jinjia-->
-              {%with messages = get_flashed_messages()%}
-              {% if messages %}
-              <ul>
-                {%for message in messages%}
-                <li>{{message}}</li>
-                {% endfor %}
-              </ul>
-              {%endif%}
-            {%endwith%}
+  </section>
+              
   
-  </div>
 
 </body>
 </html>

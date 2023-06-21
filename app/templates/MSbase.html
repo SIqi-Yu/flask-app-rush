@@ -10,19 +10,22 @@
 
       <ol>
         <li><a href="index.html">Home</a></li>
-        <li>Challenge</li>
+        <li>Membership</li>
       </ol>
-      <h2>Challenge</h2>
-
-    </div>
-  </section><!-- End Breadcrumbs -->
-  <br>
-  <br>
-  <br>
-
-  <section class="inner-page">
-    <div class="container">
-       <h5> Good {{ greeting }}! {{session['meid']}}. Here you are able to deal with your challenge information.</h5> 
+      <h2>Membership</h2>
+      <br>
+      <nav id="navbar" class="navbar bg-light">
+        <ul>
+          <li><a class="nav-link scrollto active" href={{url_for('MSsearch')}}>MembershipSearch</a></li>
+          <li><a class="nav-link scrollto" href={{url_for('MScreate')}}>MembershipCreate</a></li>
+          <li><a class="nav-link scrollto" href={{url_for("membership_chart",year=2023)}}>graph</a></li>
+        </ul>
+      </nav>
+      <br>
+      <br>
+      <br>
+  
+      <h3> Good {{ greeting }}! {{session['meid']}}. Here you are able to deal with your challenge information.</h3> 
       {% with messages = get_flashed_messages() %}
         <ul>
         {% for message in messages %}
@@ -30,22 +33,12 @@
         {% endfor %}
         </ul>
       {% endwith %}
-    </div>
-  </section>
-  <br>
-  <br>
-  <br>
-  <section class="inner-page">
-    <div class="container">
-        <div class="btn-group">
-            <a href={{url_for('MSsearch')}} class="btn btn-primary active" aria-current="page">MembershipSearch</a>
-            <a href={{url_for('MScreate')}} class="btn btn-primary">MembershipCreate</a>
-            <a href={{url_for("membership_chart",year=2023)}} class="btn btn-primary">graph</a>
-        </div>
-        
-    </div>
-  </section>
 
+    </div>
+  </section><!-- End Breadcrumbs -->
+  <br>
+  <br>
+  <br>
 </main><!-- End #main -->
 <br>
 <br>

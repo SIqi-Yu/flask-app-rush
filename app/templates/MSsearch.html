@@ -6,9 +6,22 @@
 {% block content %}
 <main id="main">
 
-    <section class="inner-page">
+    <section id="breadcrumbs" class="breadcrumbs">
         <div class="container">
+          <ol>
+            <li><a href="index.html">Home</a></li>
+            <li>Membership</li>
+          </ol>
+          <h2>Membership</h2>
           <br>
+          <br>
+          <nav id="navbar" class="navbar bg-light">
+            <ul>
+              <li><a class="nav-link scrollto active" href={{url_for('MSsearch')}}>MembershipSearch</a></li>
+              <li><a class="nav-link scrollto" href={{url_for('MScreate')}}>MembershipCreate</a></li>
+              <li><a class="nav-link scrollto" href={{url_for("membership_chart",year=2023)}}>graph</a></li>
+            </ul>
+          </nav>
           <br>
           <br>
           <br>
