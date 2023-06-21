@@ -1,0 +1,62 @@
+{% extends 'layouts/base.html'%}
+{% block title%}Charts{% endblock title %}
+{%block content%}
+<script src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js"></script>
+<script src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.candy.js"></script>
+<script>
+    var data1 = JSON.parse({{chartData1 | tojson | safe}})
+    const dataSource = {
+        chart: {
+          caption: "Lead sources by industry",
+          yaxisname: "Number of Members",
+          xaxisname: "Gender",
+          aligncaptionwithcanvas: "0",
+          plottooltext: "<b>$dataValue</b> leads received",
+          theme: "candy"
+        },
+        data: data1
+    };
+      
+      FusionCharts.ready(function() {
+        var myChart = new FusionCharts({
+          type: "column2d",
+          renderAt: "chart-container",
+          width: "100%",
+          height: "100%",
+          dataFormat: "json",
+          dataSource
+        }).render();
+      });
+
+</script>
+<main id="main">
+  <section class="breadcrumbs">
+    <div class="container">
+        <br>
+        <ol>
+          <li><a href="index.html">Home</a></li>
+          <li>Login Page</li>
+        </ol>
+        <h2>Login Page</h2>
+        <br>
+        <nav id="navbar" class="navbar bg-light">
+          <ul>
+            <li><a class="nav-link scrollto" href={{url_for('q1register')}}>Register</a></li>
+            <li><a class="nav-link scrollto" href={{url_for('q1login')}}>Log in</a></li>
+            <li><a class="nav-link scrollto" href={{url_for('q1modify')}}>Modify your information</a></li>
+            <li><a class="nav-link scrollto" href={{url_for('q1delete')}}>Delete your information</a></li>
+            <li><a class="nav-link scrollto active" href={{url_for('q1charts')}}>visualize the number of club members</a></li>
+          </ul>
+        </nav>
+        <div id="chart-container"></div>
+      {% with messages = get_flashed_messages() %}
+        <ul>
+        {% for message in messages %}
+          <li>{{message}}</li>
+        {% endfor %}
+        </ul>
+      {% endwith %}
+    </div>
+  </section>
+</main>
+{%endblock content%}

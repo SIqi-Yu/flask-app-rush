@@ -1,0 +1,54 @@
+{% extends 'layouts/base.html'%}
+{% block title%}Register{% endblock title %}
+{%block content%}
+<main id="main">
+  <section class="breadcrumbs">
+    <div class="container">
+      <ol>
+        <li><a href="index.html">Home</a></li>
+        <li>Login Page</li>
+      </ol>
+      <h2>Login Page</h2>
+      <br>
+      <nav id="navbar" class="navbar bg-light">
+        <ul>
+          <li><a class="nav-link scrollto" href={{url_for('q1register')}}>Register</a></li>
+          <li><a class="nav-link scrollto" href={{url_for('q1login')}}>Log in</a></li>
+          <li><a class="nav-link scrollto" href={{url_for('q1modify')}}>Modify your information</a></li>
+          <li><a class="nav-link scrollto active" href={{url_for('q1delete')}}>Delete your information</a></li>
+          <li><a class="nav-link scrollto" href={{url_for('q1charts')}}>visualize the number of club members</a></li>
+        </ul>
+      </nav>
+      <br>
+      <form method="post" action="{{url_for('afterdelete')}}">
+        <div class="row mb-3">
+            <label for="" class="col-sm-2 col-form-label">MEID:</label>
+            <div class="col-sm-10">
+              <!-- value can show on this input, and this value get from the last line in views.py -->
+                <input type="text" name='meid' class="form-control" id='meid' value="{{meid}}">
+            </div>
+        </div>
+       
+        <div class="row mb-3">
+            <label for="" class="col-sm-2 col-form-label">Password</label>
+            <div class="col-sm-10">
+              <!-- value can show on this input, and this value get from the last line in views.py -->
+                <input type="password" name='password' class="form-control" id="password" value="{{password}}">
+            </div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">DELETE</button>
+      </form>
+
+      <!-- 信息保留，显示在网页 -->
+      {% with messages = get_flashed_messages() %} <!-- function: flash显示的message储存在message里 -->
+        <ul>
+        {% for message in messages %} <!-- 将每一个message放在unorder list里面 -->
+          <li>{{message}}</li>
+        {% endfor %}
+        </ul>
+      {% endwith %}
+    </div>
+  </section>
+</main>
+{%endblock content%}

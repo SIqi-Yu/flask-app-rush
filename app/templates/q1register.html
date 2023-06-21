@@ -1,0 +1,121 @@
+{% extends 'layouts/base.html'%}
+{% block title%}Register{% endblock title %}
+{%block content%}
+<main id="main">
+  <section class="breadcrumbs">
+    <div class="container">
+      <ol>
+        <li><a href="index.html">Home</a></li>
+        <li>Register</li>
+      </ol>
+      <h2>Register</h2>
+      <br>
+      <nav id="navbar" class="navbar bg-light">
+        <ul>
+          <li><a class="nav-link scrollto active" href={{url_for('q1register')}}>Register</a></li>
+          <li><a class="nav-link scrollto " href={{url_for('q1login')}}>Log in</a></li>
+          <li><a class="nav-link scrollto" href={{url_for('q1modify')}}>Modify your information</a></li>
+          <li><a class="nav-link scrollto" href={{url_for('q1delete')}}>Delete your information</a></li>
+          <li><a class="nav-link scrollto" href={{url_for('q1charts')}}>visualize the number of club members</a></li>
+        </ul>
+      </nav>
+      <br>
+      <h3>Here you can input your individual information to register a <mark>new club member!</mark></h3>
+      <br>
+      <form method="post" action="{{url_for('registersubmit')}}">
+        <div class="row mb-3">
+            <label for="" class="col-sm-2 col-form-label">MEID:</label>
+            <div class="col-sm-10">
+              <!-- value can show on this input, and this value get from the last line in views.py -->
+                <input type="text" name='meid' class="form-control" id='meid' value="{{meid}}">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="" class="col-sm-2 col-form-label">First Name:</label>
+            <div class="col-sm-10">
+              <!-- value can show on this input, and this value get from the last line in views.py -->
+                <input type="text" name='firstname' class="form-control" id="firstname" value="{{firstname}}">
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label for="" class="col-sm-2 col-form-label">Last Name:</label>
+            <div class="col-sm-10">
+              <!-- value can show on this input, and this value get from the last line in views.py -->
+                <input type="text" name='lastname' class="form-control" id="lastname" value="{{lastname}}">
+            </div>
+        </div>
+
+        <div class="row mb-3">
+          <label for="" class="col-sm-2 col-form-label">Email</label>
+          <div class="col-sm-10">
+            <!-- value can show on this input, and this value get from the last line in views.py -->
+            <input type="email" name='email' class="form-control" id="email" value="{{email}}">
+          </div>
+        </div>
+   
+        <div class="row mb-3">
+            <label for="" class="col-sm-2 col-form-label">Password</label>
+            <div class="col-sm-10">
+              <!-- value can show on this input, and this value get from the last line in views.py -->
+                <input type="password" name='password' class="form-control" id="password" value="{{password}}">
+            </div>
+        </div>
+        
+        <div class="row mb-3">
+            <label for="" class="col-sm-2 col-form-label">Phone:</label>
+            <div class="col-sm-10">
+              <!-- value can show on this input, and this value get from the last line in views.py -->
+                <input type="tel" name='phone' class="form-control" id="phone" value="{{phone}}">
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label for="" class="col-sm-2 col-form-label">Age:</label>
+            <div class="col-sm-10">
+              <!-- value can show on this input, and this value get from the last line in views.py -->
+                <input type="text" name='age' class="form-control" id="age" value="{{age}}">
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label for="" class="col-sm-2 col-form-label">URT:</label>
+            <div class="col-sm-10">
+              <!-- value can show on this input, and this value get from the last line in views.py -->
+                <input type="text" name='utr' class="form-control" id="utr" value="{{utr}}">
+            </div>
+        </div>
+
+        <div class="row mb-3">
+          <label for="" class="col-sm-2 col-form-label">Gender:
+            <select name="gender" id="gender" class="form-select" value="{{gender}}">
+              <option value='female'
+              {% if gender=='female' %}
+               selected
+              {% endif %}
+              >Female</option>
+              <option value='male'
+              {% if gender=='male' %}
+               selected
+              {% endif %}
+              >Male</option>
+            </select>
+          </label>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+
+      <!-- 信息保留，显示在网页 -->
+      {% with messages = get_flashed_messages() %} <!-- function: flash显示的message储存在message里 -->
+        <ul>
+        {% for message in messages %} <!-- 将每一个message放在unorder list里面 -->
+          <li>{{message}}</li>
+        {% endfor %}
+        </ul>
+      {% endwith %}
+    </div>
+  </section>
+</main>
+<br>
+<br>
+{%endblock content%}

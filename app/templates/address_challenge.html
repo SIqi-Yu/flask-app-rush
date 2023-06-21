@@ -1,0 +1,93 @@
+{% extends 'layouts/base.html'%}
+{% block title%}address challenge{% endblock title %}
+{% block stylesheets %}{% endblock stylesheets %}
+{%block content%}
+
+<main id="main">
+  <section id="breadcrumbs" class="breadcrumbs">
+    <div class="container">
+      <ol>
+        <li><a href="index.html">Home</a></li>
+        <li>Challenge</li>
+      </ol>
+      <h2>Challenge</h2>
+    </div>
+  </section><!-- End Breadcrumbs -->
+  <br>
+  <br>
+  <br>
+
+  <section class="inner-page">
+    <div class="container">
+      <div class="container">
+        <nav id="navbar" class="navbar bg-light">
+          <ul>
+            <li><a class="nav-link scrollto" href={{url_for('create')}}>create a new challenge</a></li>
+            <li><a class="nav-link scrollto active" href={{url_for('address')}}>address challenge</a></li>
+            <li><a class="nav-link scrollto" href={{url_for('graph')}}>Check your win percentage</a></li>
+          </ul>
+        </nav>
+      </div>
+      <br>
+      <br>
+      <br>
+      <h3>• The following people have challenged you, you can delete or accept:</h3>
+      <br>
+      <table class="table table-striped">
+          <thead class="table-light">
+              <tr>
+                  <th>Challenge ID</th>
+                  <th>Challenger MEID</th>
+                  <th>Challenged MEID</th>
+                  <th>Date of Challenge</th>
+                  <th>Notes</th>
+              </tr>
+          </thead>
+          <tbody class="table-group-divider">
+              {% for challenge in filtered_challenges %}
+                  <tr>
+                      <td>{{ challenge.CID }}</td>
+                      <td>{{ challenge.ChallengerMEID }}</td>
+                      <td>{{ challenge.ChallengedMEID }}</td>
+                      <td>{{ challenge.DateOfChallenge }}</td>
+                      <td>{{ challenge.Notes }}</td>
+                  </tr>
+              {% endfor %}
+          </tbody>
+      </table>
+    
+    <br>
+    <h3>• if you want to refuse the challenge request,please input the CID and click delete button.</h3>
+    <br>
+    <br>
+    <form method="post" action="{{url_for('requestSubmit')}}">
+      <div class="row mb-3">
+        <label for="CID" class="col-sm-2 col-form-label">CID you want to delete:</label>
+        <div class="col-sm-10">
+          <input type="number" name='cid' class="form-control" id="cid" name="cid" value="{{cid}}">
+        </div>
+      </div>
+      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <button  class="btn btn-primary me-md-2" type="submit">Delete</button>
+      </div>
+      <br>
+      <h3>If you want to accept the challenge, you can click to check all challenge.</h3>
+      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <a href={{url_for('challengerinfo')}} class="btn btn-primary me-md-2">Accept</a>
+      </div>
+    </form>
+    <br>
+      {% with messages = get_flashed_messages() %}
+        <ul>
+        {% for message in messages %}
+          <li>{{message}}</li>
+        {% endfor %}
+        </ul>
+      {% endwith %}
+    
+    </div>
+  </section>
+</main><!-- End #main -->
+<br>
+<br>
+{%endblock content%}

@@ -1,0 +1,61 @@
+{% extends 'layouts/base.html'%}
+{% block title%}Challenge Info{% endblock title %}
+{% block stylesheets %}{% endblock stylesheets %}
+{%block content%}
+<main id="main">
+  <section id="breadcrumbs" class="breadcrumbs">
+    <div class="container">
+
+      <ol>
+        <li><a href="index.html">Home</a></li>
+        <li>Challenge</li>
+      </ol>
+      <h2>Challenge</h2>
+
+    </div>
+  </section><!-- End Breadcrumbs -->
+  <br>
+  
+  <section class="inner-page">
+    <div class="container">
+      <h3>The following people have challenged you, you can delete or accept:</h3>
+      <br>
+      <br>
+    <table class="table table-dark table-striped">
+        <thead>
+            <tr>
+                <th>Challenge ID</th>
+                <th>Challenger MEID</th>
+                <th>Challenged MEID</th>
+                <th>Date of Challenge</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for challenge in filtered_challenges %}
+                <tr>
+                    <td>{{ challenge.CID }}</td>
+                    <td>{{ challenge.ChallengerMEID }}</td>
+                    <td>{{ challenge.ChallengedMEID }}</td>
+                    <td>{{ challenge.DateOfChallenge }}</td>
+                    <td>{{ challenge.Notes }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+      {% with messages = get_flashed_messages() %}
+        <ul>
+        {% for message in messages %}
+          <li>{{message}}</li>
+        {% endfor %}
+        </ul>
+      {% endwith %}
+      <br>
+      <br>
+    </div>
+  </section>
+
+</main><!-- End #main -->
+
+
+{%endblock content%}
