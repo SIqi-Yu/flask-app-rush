@@ -56,7 +56,9 @@
               <li><a href={{url_for('q1login')}}>Log in</a></li>
               <li><a href={{url_for('q1modify')}}>Modify individual info</a></li>
               <li><a href={{url_for('q1delete')}}>Delete individual info</a></li>
-              <li><a href={{url_for('q1charts')}}>check individual info charts</a></li>
+              <li><a class="nav-link scrollto" href={{url_for('q1chart1')}}>visualize club members by Age</a></li>
+              <li><a class="nav-link scrollto" href={{url_for('q1chart2')}}>visualize club members by Gender</a></li>
+              <li><a class="nav-link scrollto" href={{url_for('q1chart3')}}>visualize club members by UTR</a></li>
             </ul>
           </li>
           <li><a class="nav-link scrollto" href="{{url_for('q1login')}}">Challenge</a></li>
@@ -112,8 +114,6 @@
               <li><a href="#">Create/Modify challenge</a></li>
               <li><a href="#">Accept/Delete challenge</a></li>
               <li><a href="#">Check win/loss charts</a></li>
-              <li><a href="#">Delete</a></li>
-              <li><a href="#">Member charts</a></li>
             </ul>
 
           </div>

@@ -184,18 +184,28 @@ def afterdelete():
             flash('Incorrect MEID or Password')
             return render_template('q1delete.html',meid=meid,password=password)     
 
-@app.route('/q1chart')
-def q1charts():
+@app.route('/q1chart1')
+def chart1():
     result=db.session.query(Member.Gender.label('label'), func.count(Member.MEID).label('value')).group_by('Gender')
     chartData1 = [row._asdict() for row in result]
     chartData1 = json.dumps(chartData1)
-    
-    result=db.session.query(Member.Age.label('label'), func.count(Member.MEID).label('value')).group_by('Age')
+    return render_template('q1chart1.html', chartData = chartData1)
+
+@app.route('/q1chart2')
+def chart2():
+    result=db.session.query(func.count(Member.MEID).label('value')).group_by('Age')
     chartData2 = [row._asdict() for row in result]
     chartData2 = json.dumps(chartData2)
-    
-    return render_template('q1chart.html', chartData1 = chartData1, chartData2=chartData2)
+     
+    return render_template('q1chart2.html', chartData = chartData2)
 
+@app.route('/q1chart3')
+def chart3():
+    result=db.session.query(Member.UTR.label('label'), func.count(Member.MEID).label('value')).group_by('UTR')
+    chartData3 = [row._asdict() for row in result]
+    chartData3 = json.dumps(chartData3)
+     
+    return render_template('q1chart3.html', chartData = chartData3)
 
 
 
