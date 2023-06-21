@@ -19,11 +19,11 @@ def index():
 
 
 @app.route("/MSbase")
-def about3():
+def MSbase():
     return render_template('MSbase.html')
 
 @app.route("/q4.1")
-def about1():
+def MScreate():
     
     return render_template('MScreate.html')
 
@@ -66,17 +66,20 @@ def membershipCreate():
     if not error:
         if not msid:
             # create a new membership in database
-            new_membership = membership(MSID=msid, MEID=meid,StartDate=startdate,EndDate=enddate)
+            new_membership = membership(MEID=meid,StartDate=startdate,EndDate=enddate,InvoiceDate=indate
+                                        ,DueDate=duedate,Amount=amount,PaidDate=paiddate)
             db.session.add(new_membership)
             db.session.commit()
             db.session.refresh(new_membership)#get new pid
             session['meid']=new_membership.MEID
-            flash("A new supplier with SupplierID=" +str(new_membership.ProductID) + " has been added.")
+            flash("A new Membership=" +str(new_membership.MSID) + " has been added.")
+            return render_template('success.html')
+            
         else:
             #save a session var
-            session['msid']=msid
+
             #modify an existing product
-            new_membership = membership.query.get('msid')
+            new_membership = membership.query.get(msid)
             new_membership.MEID = meid
             new_membership.StartDate = startdate
             new_membership.EndDate = enddate
@@ -86,14 +89,14 @@ def membershipCreate():
             new_membership.Amount = amount
             new_membership.verified=True
             db.session.commit()
-            flash("updated")
-        return render_template('MScreate.html')
+            flash("The Membership " +str(new_membership.MSID) + " information has been modified.")
+            return render_template('success.html')
     else:
         return render_template('MScreate.html',error=error,MEID=meid,MSID=msid,STARTDATE=startdate,ENDDATE=enddate,INDATE=indate,DUEDATE=duedate,PAIDDATE=paiddate,AMOUNT=amount)
     
 
 @app.route("/q4.2")
-def about2():
+def MSsearch():
     
     return render_template('MSsearch.html')
 
@@ -132,10 +135,26 @@ def MembershipDelete():
     
 
 
-@app.route("/MembershipOverdue")
-def MembershipOverdue():
-    current_time = datetime.now()
-    flash(current_time)
-    mem_overdue = membership.query.filter(membership.DueDate<=current_time).all()
-    gridData = mem_overdue
-    return render_template("MSgraph.html",gridData=gridData)
+@app.route("/membership_chart/<year>")
+def membership_chart(year):
+    # Get the membership records for the given year
+    memberships = membership.query.filter(db.func.extract('year', membership.PaidDate) == year).all()
+
+    # Count the number of members who have paid and who have not paid
+    members_paid = sum(1 for membership in memberships if membership.DueDate)
+    members_not_paid = sum(1 for membership in memberships if not membership.DueDate)
+
+    # Prepare the chart data
+    chart_data = {
+        "chart": {
+            "caption": f"Membership Dues Payment for Year {year}",
+            "theme": "fusion"
+        },
+        "data": [
+            {"label": "Paid", "value": members_paid},
+            {"label": "Not Paid", "value": members_not_paid}
+        ]
+    }
+    chart_data = json.dumps(chart_data)
+
+    return render_template("MSgraph.html", chart_data=chart_data)

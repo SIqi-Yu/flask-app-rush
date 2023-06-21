@@ -4,83 +4,34 @@
 {% block title %}Invoice Display{% endblock title %}
 
 {% block content %}
-  <style>
-    /* Custom CSS for the invoice layout */
-    .invoice-container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 20px;
-      border: 1px solid #ccc;
-    }
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Membership Chart</title>
+    <script src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js"></script>
+    <script src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js"></script>
+    <script>
+        FusionCharts.ready(function () {
+            var chartConfig = {
+                type: "pie2d",
+                renderAt: "chart-container",
+                width: "600",
+                height: "400",
+                dataFormat: "json",
+                dataSource: {{ chart_data|safe }}
+            };
 
-    .invoice-header {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .invoice-table {
-      width: 100%;
-      margin-bottom: 20px;
-    }
-
-    .invoice-table th,
-    .invoice-table td {
-      padding: 10px;
-      border-bottom: 1px solid #ccc;
-    }
-
-    .invoice-total {
-      text-align: right;
-      margin-top: 20px;
-      font-weight: bold;
-    }
-  </style>
-
-  
-    <main id="main">
-
-      <section class="inner-page">
-
-          <div class="container">
-            <br>
-            
-            <br>
-
-            <div class="invoice-container">
-              <h1 class="invoice-header">Invoice</h1>
-          
-              <table class="invoice-table">
-                <thead>
-                  <tr>
-                    <th>MSID</th>
-                    <th>MEID</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Invoice Date</th>
-                    <th>Due Date</th>
-                    <th>Amount</th>
-                    <th>Paid Date</th>
-                  </tr>
-                </thead>
-                <tbody>
-          
-                    <tr>
-                      <td>{{ gridData}}</td>
-                      <td>{{ gridData.MEID }}</td>
-                      <td>{{ gridData.StartDate }}</td>
-                      <td>{{ gridData.EndDate }}</td>
-                      <td>{{ gridData.InvoiceDate }}</td>
-                      <td>{{ gridData.DueDate }}</td>
-                      <td>{{ gridData.Amount }}</td>
-                      <td>{{ gridData.PaidDate }}</td>
-                    </tr>
-          
-                </tbody>
-              </table>
-          
- 
-    <div class="invoice-total">
-      Total: 1 records
+            var chart = new FusionCharts(chartConfig);
+            chart.render();
+        });
+    </script>
+</head>
+<body>
+  <br>
+  <br>
+  <br>
+  <h2>Membership Chart for Year {{ year }}</h2>
+    <div id="chart-container"></div>
 
     </div>
               <!--jinjia-->
@@ -95,4 +46,7 @@
             {%endwith%}
   
   </div>
+
+</body>
+</html>
 {% endblock content %}
