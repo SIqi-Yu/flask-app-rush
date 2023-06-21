@@ -6,7 +6,7 @@ Copyright (c) 2019 - present AppSeed.us
 # Flask modules
 from flask   import render_template,json,request, redirect, url_for, flash, session
 from jinja2  import TemplateNotFound
-
+from datetime import datetime
 # App modules
 from app import app, db
 from app.models import membership
@@ -18,6 +18,9 @@ def index():
     return render_template('index.html')
 
 
+@app.route("/MSbase")
+def about3():
+    return render_template('MSbase.html')
 
 @app.route("/q4.1")
 def about1():
@@ -91,7 +94,6 @@ def membershipCreate():
 
 @app.route("/q4.2")
 def about2():
-
     
     return render_template('MSsearch.html')
 
@@ -99,6 +101,7 @@ def about2():
 def MembershipSearch():
 
     msid = request.form.get('msid')
+    session['msid']=msid
     meid = request.form.get('meid')
     MEMbership = membership.query.get(msid)
     error =False
@@ -117,3 +120,22 @@ def MembershipSearch():
     
     else:
         return render_template('MSsearch.html',error=error)
+
+@app.route("/MembershipDelete",methods=['GET','POST'])
+def MembershipDelete():
+    del_msid=session.get("msid")
+    db.session.delete(membership.query.get(del_msid))
+    db.session.commit()
+    flash('Record deleted successfully.')
+    
+    return render_template("success.html")
+    
+
+
+@app.route("/MembershipOverdue")
+def MembershipOverdue():
+    current_time = datetime.now()
+    flash(current_time)
+    mem_overdue = membership.query.filter(membership.DueDate<=current_time).all()
+    gridData = mem_overdue
+    return render_template("MSgraph.html",gridData=gridData)

@@ -36,37 +36,53 @@
     }
   </style>
 
-  <div class="invoice-container">
-    <h1 class="invoice-header">Invoice</h1>
+  
+    <main id="main">
 
-    <table class="invoice-table">
-      <thead>
-        <tr>
-          <th>MSID</th>
-          <th>MEID</th>
-          <th>Start Date</th>
-          <th>End Date</th>
-          <th>Invoice Date</th>
-          <th>Due Date</th>
-          <th>Amount</th>
-          <th>Paid Date</th>
-        </tr>
-      </thead>
-      <tbody>
+      <section class="inner-page">
 
-          <tr>
-            <td>{{ gridData}}</td>
-            <td>{{ gridData.MEID }}</td>
-            <td>{{ gridData.StartDate }}</td>
-            <td>{{ gridData.EndDate }}</td>
-            <td>{{ gridData.InvoiceDate }}</td>
-            <td>{{ gridData.DueDate }}</td>
-            <td>{{ gridData.Amount }}</td>
-            <td>{{ gridData.PaidDate }}</td>
-          </tr>
+          <div class="container">
+            <br>
+            
+            <br>
 
-      </tbody>
-    </table>
+            <div class="invoice-container">
+              <h1 class="invoice-header">Invoice</h1>
+          
+              <table class="invoice-table">
+                <thead>
+                  <tr>
+                    <th>MSID</th>
+                    <th>MEID</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Invoice Date</th>
+                    <th>Due Date</th>
+                    <th>Amount</th>
+                    <th>Paid Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+          
+                    <tr>
+                      <td>{{ gridData}}</td>
+                      <td>{{ gridData.MEID }}</td>
+                      <td>{{ gridData.StartDate }}</td>
+                      <td>{{ gridData.EndDate }}</td>
+                      <td>{{ gridData.InvoiceDate }}</td>
+                      <td>{{ gridData.DueDate }}</td>
+                      <td>{{ gridData.Amount }}</td>
+                      <td>{{ gridData.PaidDate }}</td>
+                    </tr>
+          
+                </tbody>
+              </table>
+          
+            <form method="post" action="{{url_for('MembershipDelete')}}">
+
+  
+              <button type="submit" class="btn btn-primary">Delete</button>
+            </form>
 
     <div class="invoice-total">
       Total: 1 records

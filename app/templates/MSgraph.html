@@ -1,97 +1,98 @@
-{%extends "layouts/base.html"%}
 
-{% block title %}invocie display{% endblock title %} 
+{% extends "layouts/base.html" %}
+
+{% block title %}Invoice Display{% endblock title %}
+
 {% block content %}
-<script src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js"></script>
-<script src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.candy.js"></script>
-<script>
-    var data = JSON.parse({{ gridData| tojson | safe}})
-    const dataSource = {
-      chart: {
-        caption:"Membership Information",
-        theme: "invocie",
+  <style>
+    /* Custom CSS for the invoice layout */
+    .invoice-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+    }
 
-      },
-      columns: [
-        {
-          label: "MSID",
-          datatype: "string"
-        },
-        {
-          label: "MEID",
-          datatype: "string"
-        },
-        {
-          label: "Start Date",
-          datatype: "string"
-        },
-        {
-          label: "End Date",
-          datatype: "string"
-        },
-        {
-          label: "Invoice Date",
-          datatype: "string"
-        },
-        {
-          label: "Due Date",
-          datatype: "string"
-        },
-        {
-          label: "Amount",
-          datatype: "number"
-        },
-        {
-          label: "Paid Date",
-          datatype: "string"
-        }
-      ],
-      
-        data: data        
-      };
-      console.log(dataSource)
-      FusionCharts.ready(function() {
-        var myChart = new FusionCharts({
-          type: "bar2d",
-          renderAt: "chart-container",
-          width: "100%",
-          height: "100%",
-          dataFormat: "json",
-          dataSource: dataSource
-        }).render();
-      });
+    .invoice-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
 
-    </script>
+    .invoice-table {
+      width: 100%;
+      margin-bottom: 20px;
+    }
 
+    .invoice-table th,
+    .invoice-table td {
+      padding: 10px;
+      border-bottom: 1px solid #ccc;
+    }
 
+    .invoice-total {
+      text-align: right;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
 
-<main id="main">
+  
+    <main id="main">
 
-    <section class="inner-page">
-        <div class="container">
-          <br>
-          <br>
-          <!--column and bar chart/simple bar-->
+      <section class="inner-page">
 
-          <div id="chart-container"></div>
+          <div class="container">
+            <br>
+            
+            <br>
 
-
-          <!--jinjia-->
-          {%with messages = get_flashed_messages()%}
-            {% if messages %}
-            <ul>
-              {%for message in messages%}
-              <li>{{message}}</li>
-              {% endfor %}
-            </ul>
-            {%endif%}
-          {%endwith%}
-
-        </div>
-      </section>
+            <div class="invoice-container">
+              <h1 class="invoice-header">Invoice</h1>
+          
+              <table class="invoice-table">
+                <thead>
+                  <tr>
+                    <th>MSID</th>
+                    <th>MEID</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Invoice Date</th>
+                    <th>Due Date</th>
+                    <th>Amount</th>
+                    <th>Paid Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+          
+                    <tr>
+                      <td>{{ gridData}}</td>
+                      <td>{{ gridData.MEID }}</td>
+                      <td>{{ gridData.StartDate }}</td>
+                      <td>{{ gridData.EndDate }}</td>
+                      <td>{{ gridData.InvoiceDate }}</td>
+                      <td>{{ gridData.DueDate }}</td>
+                      <td>{{ gridData.Amount }}</td>
+                      <td>{{ gridData.PaidDate }}</td>
+                    </tr>
+          
+                </tbody>
+              </table>
+          
  
+    <div class="invoice-total">
+      Total: 1 records
 
-
-  </main><!-- End #main -->
-
-  {% endblock content %}
+    </div>
+              <!--jinjia-->
+              {%with messages = get_flashed_messages()%}
+              {% if messages %}
+              <ul>
+                {%for message in messages%}
+                <li>{{message}}</li>
+                {% endfor %}
+              </ul>
+              {%endif%}
+            {%endwith%}
+  
+  </div>
+{% endblock content %}
