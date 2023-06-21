@@ -105,7 +105,6 @@ def MembershipSearch():
 
     msid = request.form.get('msid')
     session['msid']=msid
-    meid = request.form.get('meid')
     MEMbership = membership.query.get(msid)
     error =False
     if not msid :
