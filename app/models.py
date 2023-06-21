@@ -5,10 +5,30 @@ Copyright (c) 2019 - present AppSeed.us
 
 from app import db
 
-class Profiles(db.Model):
-    uid = db.Column(db.Integer, primary_key=True)
-    uname = db.Column(db.String(50), nullable=False)
-    upass = db.Column(db.String(50), nullable=False)
+class Member(db.Model):
+    MEID = db.Column(db.Integer, primary_key=True)
+    FirstName = db.Column(db.String(50), nullable=False)
+    LastName = db.Column(db.String(50), nullable=True)
+    Email = db.Column(db.String(50), nullable=False)
+    MPassword = db.Column(db.String(30), nullable=False)
+    Phone = db.Column(db.String(20), nullable=False)
+    Age = db.Column(db.Integer, nullable=False)
+    Gender = db.Column(db.String(10), nullable=False)
+    UTR = db.Column(db.Float(50), nullable=False)
+    DateOfCreation = db.Column(db.Date, nullable=False)
+
+class Challenge(db.Model):
+    CID = db.Column(db.Integer, primary_key=True)
+    ChallengerMEID = db.Column(db.Integer, nullable=False)
+    ChallengedMEID = db.Column(db.Integer, nullable=False)
+    DateOfChallenge = db.Column(db.Date, nullable=False)
+    Notes = db.Column(db.String(100), nullable=True)
+
+class Tmatch(db.Model):
+    MAID = db.Column(db.Integer, primary_key=True)
+    CID = db.Column(db.Integer, nullable=False)
+    WinnerMEID = db.Column(db.Integer, nullable=False)
+    LoserMEID = db.Column(db.Integer, nullable=False)
 
 # class Stats(db.Model):
 
