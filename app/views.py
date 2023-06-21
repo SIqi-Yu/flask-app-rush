@@ -6,23 +6,7 @@ from datetime import datetime
 
 # App modules
 from app import app, db
-from app.models import Member, Challenge, Tmatch
-
-
-# -*- encoding: utf-8 -*-
-"""
-Copyright (c) 2019 - present AppSeed.us
-"""
-
-# Flask modules
-from flask   import render_template,json,request, redirect, url_for, flash, session
-from jinja2  import TemplateNotFound
-from datetime import datetime
-# App modules
-from app import app, db
-from app.models import membership
-# from app.models import Profiles
-
+from app.models import Member, Challenge, Tmatch, membership
 
 @app.route('/')
 def index():
@@ -340,10 +324,6 @@ def challengeFormSubmit():
     else:
         return render_template('create_challenge.html',error=error, cid=c_id, challengerID=challenger_meid, challengedID=challenged_meid, date=c_date, note=c_note)
 
- 
-
-
-=======
 
 @app.route("/MSbase")
 def MSbase():
