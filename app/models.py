@@ -28,6 +28,13 @@ class Challenge(db.Model):
 class Tmatch(db.Model):
     MAID = db.Column(db.Integer, primary_key=True)
     CID = db.Column(db.Integer, nullable=False)
+    DateOfMatch = db.Column(db.Date, nullable=False)
+    MEID1Set1Score = db.Column(db.Integer, nullable=False)
+    MEID2Set1Score = db.Column(db.Integer, nullable=False)
+    MEID1Set2Score = db.Column(db.Integer, nullable=True)
+    MEID2Set2Score = db.Column(db.Integer, nullable=True)
+    MEID1Set3Score = db.Column(db.Integer, nullable=True)
+    MEID2Set3Score = db.Column(db.Integer, nullable=True)
     WinnerMEID = db.Column(db.Integer, nullable=False)
     LoserMEID = db.Column(db.Integer, nullable=False)
 

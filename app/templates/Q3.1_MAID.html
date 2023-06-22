@@ -1,0 +1,205 @@
+{% extends "layouts/base.html" %}
+{% block title %} Enter your Match ID {% endblock title %} 
+
+{% block content %}
+<main id="main">
+    <section id="breadcrumbs" class="breadcrumbs">
+      <div class="container">
+        <ol>
+          <li><a href="index.html">Home</a></li>
+          <li>Match</li>
+        </ol>
+        <h2>Match</h2>
+        <nav id="navbar" class="navbar bg-light">
+          <ul>
+            <li><a class="nav-link scrollto" href={{url_for('q3MAID')}}>Create/Modify a match</a></li>
+            <li><a class="nav-link scrollto" href={{url_for('q3MAIDdelete')}}>Delete a match</a></li>
+            <li><a class="nav-link scrollto" href={{url_for('q3MAIDsearch')}}>Search a match</a></li>
+            <li><a class="nav-link scrollto" href={{url_for('q3player')}}>See a data graph</a></li>
+          </ul>
+        </nav>
+      </div>
+    </section>
+    <section class="inner-page">
+      <div class="container">
+        <br>
+        <br>
+        <br>
+        <br>        
+        <form method="post" action="{{url_for('q3MAIDSubmit')}}">
+          <div class="row mb-3">
+            <label for="ChallengeID" class="col-sm-2 col-form-label">Challenge ID:</label>
+            <div class="col-sm-10">
+              <select class="form-control" id="q3cid" name="q3cid" value="{{q3cid}}">
+                <option></option>
+                  {% for challenge in q3allchallenges %}
+                    <option values="{{challenge.CID}}">{{challenge.CID}}</option>
+                  {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <label for="MatchID" class="col-sm-2 col-form-label">Match ID:</label>
+            <div class="col-sm-10">
+              <input type="number" class="form-control" id="q3maid" name="q3maid" value="{{q3maid}}">
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <label for="DateofMatch" class="col-sm-2 col-form-label">Date of Match:</label>
+            <div class="col-sm-10">
+              <input type="date" class="form-control" id="q3dom" name="q3dom" value="{{q3dom}}">
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <label for="MatchID" class="col-sm-2 col-form-label">First match:</label>
+            <div class="col-sm-10">
+              <table>
+                <tbody>
+                  <tr>
+                    <td>
+                      Challenger's score
+                    </td>
+                    <td>
+                      <select class="form-control" id="q3cerm1" name="q3cerm1">
+                        <option></option>
+                        {% for i in range(8) %}
+                          {% if cerm1==(i)%}
+                            <option value="{{i}}" selected>{{i}}</option>
+                          {%else%}
+                            <option value="{{i}}">{{i}}</option>
+                          {%endif%}
+                        {% endfor%}
+                      </select>
+                    </td>
+                    <td>
+                      :
+                    </td>
+                    <td>
+                      <select class="form-control" id="q3cedm1" name="q3cedm1">
+                        <option></option>
+                        {% for i in range(8) %}
+                          {% if cedm1==(i)%}
+                            <option value="{{i}}" selected>{{i}}</option>
+                          {%else%}
+                            <option value="{{i}}">{{i}}</option>
+                          {%endif%}
+                        {% endfor%}
+                      </select>
+                    </td>
+                    <td>
+                      Challenged's score
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <label for="MatchID" class="col-sm-2 col-form-label">Second match:</label>
+            <div class="col-sm-10">
+              <table>
+                <tbody>
+                  <tr>
+                    <td>
+                      Challenger's score
+                    </td>
+                    <td>
+                      <select class="form-control" id="q3cerm2" name="q3cerm2">
+                        <option></option>
+                        {% for i in range(8) %}
+                          {% if cerm1==(i)%}
+                            <option value="{{i}}" selected>{{i}}</option>
+                          {%else%}
+                            <option value="{{i}}">{{i}}</option>
+                          {%endif%}
+                        {% endfor%}
+                      </select>
+                    </td>
+                    <td>
+                      :
+                    </td>
+                    <td>
+                      <select class="form-control" id="q3cedm2" name="q3cedm2">
+                        <option></option>
+                        {% for i in range(8) %}
+                          {% if cedm1==(i)%}
+                            <option value="{{i}}" selected>{{i}}</option>
+                          {%else%}
+                            <option value="{{i}}">{{i}}</option>
+                          {%endif%}
+                        {% endfor%}
+                      </select>
+                    </td>
+                    <td>
+                      Challenged's score
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <label for="MatchID" class="col-sm-2 col-form-label">Third match:</label>
+            <div class="col-sm-10">
+              <table>
+                <tbody>
+                  <tr>
+                    <td>
+                      Challenger's score
+                    </td>
+                    <td>
+                      <select class="form-control" id="q3cerm3" name="q3cerm3">
+                        <option></option>
+                        {% for i in range(11) %}
+                          {% if cerm1==(i)%}
+                            <option value="{{i}}" selected>{{i}}</option>
+                          {%else%}
+                            <option value="{{i}}">{{i}}</option>
+                          {%endif%}
+                        {% endfor%}
+                      </select>
+                    </td>
+                    <td>
+                      :
+                    </td>
+                    <td>
+                      <select class="form-control" id="q3cedm3" name="q3cedm3">
+                        <option></option>
+                        {% for i in range(11) %}
+                          {% if cedm1==(i)%}
+                            <option value="{{i}}" selected>{{i}}</option>
+                          {%else%}
+                            <option value="{{i}}">{{i}}</option>
+                          {%endif%}
+                        {% endfor%}
+                      </select>
+                    </td>
+                    <td>
+                      Challenged's score
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Sign in</button>
+        </form>
+
+        {% with messages = get_flashed_messages() %}
+          <ul>
+          {% for message in messages %}
+            <li>{{message}}</li>
+          {% endfor %}
+          </ul>
+        {% endwith %}
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+{% endblock content %}
