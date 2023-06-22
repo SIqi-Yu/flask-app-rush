@@ -33,7 +33,23 @@
 </script>
 
 <main id="main">
-
+    <section id="breadcrumbs" class="breadcrumbs">
+      <div class="container">
+        <ol>
+          <li><a href="index.html">Home</a></li>
+          <li>Match</li>
+        </ol>
+        <h2>Match</h2>
+        <nav id="navbar" class="navbar bg-light">
+          <ul>
+            <li><a class="nav-link scrollto" href={{url_for('q3MAID')}}>Create/Modify a match</a></li>
+            <li><a class="nav-link scrollto" href={{url_for('q3MAIDdelete')}}>Delete a match</a></li>
+            <li><a class="nav-link scrollto" href={{url_for('q3MAIDsearch')}}>Search a match</a></li>
+            <li><a class="nav-link scrollto" href={{url_for('q3player')}}>See a data graph</a></li>
+          </ul>
+        </nav>
+      </div>
+    </section>
     <section class="inner-page">
       <div class="container">
         <br>
