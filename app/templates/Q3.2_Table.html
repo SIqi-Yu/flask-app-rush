@@ -1,0 +1,67 @@
+{% extends "layouts/base.html" %}
+{% block title %} Match Table {% endblock title %} 
+
+{% block content %}
+<main id="main">
+    <section id="breadcrumbs" class="breadcrumbs">
+      <div class="container">
+        <ol>
+          <li><a href="index.html">Home</a></li>
+          <li>Match</li>
+        </ol>
+        <h2>Match</h2>
+        <nav id="navbar" class="navbar bg-light">
+          <ul>
+            <li><a class="nav-link scrollto" href={{url_for('q3MAID')}}>Create/Modify a match</a></li>
+            <li><a class="nav-link scrollto" href={{url_for('q3MAIDdelete')}}>Delete a match</a></li>
+            <li><a class="nav-link scrollto" href={{url_for('q3MAIDsearch')}}>Search a match</a></li>
+            <li><a class="nav-link scrollto" href={{url_for('q3player')}}>See a data graph</a></li>
+          </ul>
+        </nav>
+      </div>
+    </section>
+    <section class="inner-page">
+      <div class="container">
+        <br>
+        <br>
+        <br>
+        <br>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Match ID</th>
+              <th scope="col">Challenge ID</th>
+              <th scope="col">Date of Match</th>
+              <th scope="col">Match 1</th>
+              <th scope="col">Match 2</th>
+              <th scope="col">Match 3</th>
+              <th scope="col">Winner MEID</th>
+              <th scope="col">Loser MEID</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">{{q3updatedmatch.MAID}}</th>
+              <td>{{q3updatedmatch.CID}}</td>
+              <td>{{q3updatedmatch.DateOfMatch}}</td>
+              <td>{{q3updatedmatch.MEID1Set1Score}}:{{q3updatedmatch.MEID2Set1Score}}</td>
+              <td>{{q3updatedmatch.MEID1Set2Score}}:{{q3updatedmatch.MEID2Set2Score}}</td>
+              <td>{{q3updatedmatch.MEID1Set3Score}}:{{q3updatedmatch.MEID2Set3Score}}</td>
+              <td>{{q3updatedmatch.WinnerMEID}}</td>
+              <td>{{q3updatedmatch.LoserMEID}}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        {% with messages = get_flashed_messages() %}
+          <ul>
+          {% for message in messages %}
+            <li>{{message}}</li>
+          {% endfor %}
+          </ul>
+        {% endwith %}
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+{% endblock content %}
