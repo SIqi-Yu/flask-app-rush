@@ -13,10 +13,15 @@
       <h2>You can choose to log in or register to enjoy the rights and interests of the tennis club</h2>
       <img src="/static/assets/img/hero-img.png" alt="Hero Imgs" data-aos="zoom-out" data-aos-delay="100">
       <a href={{url_for('q1register')}} class="btn-get-started scrollto">Register</a>
-      <a href={{url_for('q1login')}} class="btn-get-started scrollto">Log in</a>
+      
+      {%if not session.get('meid'):%}
+        <a href={{url_for('q1login')}} class="btn-get-started scrollto">Log in</a>
+      {%else:%}
+        <a href={{url_for('q1logout')}} class="btn-get-started scrollto">Log out</a>
+      {%endif%}
       <div class="btns">
         <a href={{url_for('q1login')}}><i class="fa fa-apple fa-3x"></i> Challenge</a>
-        <a href={{url_for("MSbase")}}><i class="fa fa-apple fa-3x"></i> Membership</a>
+        <a href={{url_for("MScreate")}}><i class="fa fa-apple fa-3x"></i> Membership</a>
       </div>
     </div>
   </section><!-- End Hero Section -->

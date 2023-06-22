@@ -98,19 +98,34 @@ def afterLogin():
         elif password==member.MPassword:
             session['meid'] = meid
             session['password'] = password
+            user=Member.query.get(meid)
+            session['FristName'] = user.FirstName
+            session['LastName'] = user.LastName
+            session['is_admin'] = user.is_admin
             currentHour = datetime.now().hour
             greeting = "morning" if currentHour < 12 else "afternoon"
-            return render_template('q1afterlogin.html', greeting=greeting)
+            session['greeting']=greeting
+            return render_template('index.html')
         
         else:
             flash('Incorrect MEID or Password')
             return render_template('q1login.html',meid=meid,password=password)
+
+@app.route('/q1logout')
+def q1logout():
+    session.clear()
+    return render_template('index.html')
+
 @app.route('/q1modify')
 def q1modify():
-    return render_template('q1modify.html')
+    if not session.get('meid'):
+        return render_template('q1login.html')
+    else:
+        return render_template('q1modify.html')
 
 @app.route('/aftermodify', methods=['GET','POST'])
 def aftermodify():
+    
     meid=request.form.get('meid')
     email=request.form.get('email')
     password1=request.form.get('password1')
@@ -155,7 +170,10 @@ def aftermodify():
             return render_template('q1modify.html', meid=meid, password1=password1, password2=password2, age=age, email=email, firstname=firstname, lastname=lastname,gender=gender)
 @app.route('/q1delete')
 def q1delete():
-    return render_template('q1delete.html')
+    if not session.get('meid'):
+        return render_template('q1login.html')
+    else:
+        return render_template('q1delete.html')
 
 @app.route('/afterdelete', methods=['GET','POST'])
 def afterdelete():
@@ -219,50 +237,59 @@ def q2log():
 @app.route('/q2logsubmit', methods=['GET', 'POST'])
 def q2logSubmit():
     # Get the user input values
-    c_meid = request.form.get('cmeid')
+    meid = request.form.get('cmeid')
     c_pass = request.form.get('cpass')   
     #check error
-    if not c_meid or not c_pass:
+    if not meid or not c_pass:
         flash('You need to input your MEID and password')
     else:
-        c_member = Member.query.get(c_meid)
+        c_member = Member.query.get(meid)
         if c_pass==c_member.MPassword:
         #save the supplierID and company name into session, 
-            session['c_meid'] = c_meid
+            session['meid'] = meid
             currentHour = datetime.now().hour
             greeting = "morning" if currentHour < 12 else "afternoon"
-            filtered_challenges = Challenge.query.filter(Challenge.ChallengerMEID==int(session['c_meid'])).all()
+            filtered_challenges = Challenge.query.filter(Challenge.ChallengerMEID==int(session['meid'])).all()
             return render_template('challenge_afterlog.html', greeting=greeting, filtered_challenges = filtered_challenges)
         else:
             flash('Invalid MEID or Passwords')
-            return render_template('challenge_log.html',cmeid=c_meid, cpass=c_pass)
+            return render_template('challenge_log.html',cmeid=meid, cpass=c_pass)
 
                 
 # afterlog -- create a new challenge
 @app.route('/q2create')
 def create():
-    return render_template('create_challenge.html')
+    if not session.get('meid'):
+        return render_template('q1login.html')
+    else:
+        return render_template('create_challenge.html')
 
 ## afterlog -- address challenge request
 @app.route('/q2address')
 def address():
-    filtered_challenges = Challenge.query.filter(Challenge.ChallengerMEID==int(session['c_meid'])).all()
-    return render_template('address_challenge.html', filtered_challenges = filtered_challenges)
+    if not session.get('meid'):
+        return render_template('q1login.html')
+    else:
+        filtered_challenges = Challenge.query.filter(Challenge.ChallengerMEID==int(session['meid'])).all()
+        return render_template('address_challenge.html', filtered_challenges = filtered_challenges)
 
 ## afterlog -- show chart
 @app.route('/q2graph', methods=['GET', 'POST'])
 def graph():
-    c_meid = session.get('c_meid')
-    result_win = db.session.query(Tmatch.WinnerMEID.label('Wins'), 
-                                  func.count(Tmatch.WinnerMEID).label('value')).filter(Tmatch.WinnerMEID==c_meid)
-    result_lose = db.session.query(Tmatch.LoserMEID.label('Loses'), 
-                                   func.count(Tmatch.LoserMEID).label('value')).filter(Tmatch.LoserMEID==c_meid)
+    if not session.get('meid'):
+        return render_template('q1login.html')
+    else:
+        meid = session.get('meid')
+        result_win = db.session.query(Tmatch.WinnerMEID.label('Wins'), 
+                                  func.count(Tmatch.WinnerMEID).label('value')).filter(Tmatch.WinnerMEID==meid)
+        result_lose = db.session.query(Tmatch.LoserMEID.label('Loses'), 
+                                   func.count(Tmatch.LoserMEID).label('value')).filter(Tmatch.LoserMEID==meid)
     
-    q2chartData1 = [row._asdict() for row in result_win]
-    q2chartData2 = [row._asdict() for row in result_lose]
-    q2chartData = q2chartData1 + q2chartData2
-    q2chartData = json.dumps(q2chartData)
-    return render_template('challenge_graph.html', q2chartData=q2chartData)
+        q2chartData1 = [row._asdict() for row in result_win]
+        q2chartData2 = [row._asdict() for row in result_lose]
+        q2chartData = q2chartData1 + q2chartData2
+        q2chartData = json.dumps(q2chartData)
+        return render_template('challenge_graph.html', q2chartData=q2chartData)
 
 
 ## address request -- delete row in database
@@ -278,12 +305,12 @@ def requestSubmit():
         else:
             db.session.delete(delete_challenge)
             db.session.commit()
-            filtered_challenges = Challenge.query.filter(Challenge.ChallengerMEID==int(session['c_meid'])).all()
+            filtered_challenges = Challenge.query.filter(Challenge.ChallengerMEID==int(session['meid'])).all()
             return render_template('address_challenge.html',filtered_challenges=filtered_challenges)
 
 @app.route('/allcha', methods=['GET', 'POST'])
 def challengerinfo():
-    filtered_challenges = Challenge.query.filter(Challenge.ChallengerMEID==int(session['c_meid'])).all()
+    filtered_challenges = Challenge.query.filter(Challenge.ChallengerMEID==int(session['meid'])).all()
     return render_template('challenge_info.html', filtered_challenges = filtered_challenges)
 
 #create new challenge information
@@ -349,6 +376,8 @@ def challengeFormSubmit():
             return render_template('create_info.html', challenge=challenge)
     else:
         return render_template('create_challenge.html',error=error, cid=c_id, challengerID=challenger_meid, challengedID=challenged_meid, date=c_date, note=c_note)
+
+
 
 
 
@@ -555,14 +584,14 @@ def q3searchMEIDSubmit():
  
  
 # Question 4
-@app.route("/MSbase")
-def MSbase():
-    return render_template('MSbase.html')
+
 
 @app.route("/q4.1")
 def MScreate():
-    
-    return render_template('MScreate.html')
+    if not session.get('meid'):
+        return render_template('q1login.html')
+    else:
+        return render_template('MScreate.html')
 
 @app.route("/membershipCreate",methods=['GET','POST'])
 def membershipCreate():
@@ -634,8 +663,10 @@ def membershipCreate():
 
 @app.route("/q4.2")
 def MSsearch():
-    
-    return render_template('MSsearch.html')
+    if not session.get('meid'):
+        return render_template('q1login.html')
+    else:
+        return render_template('MSsearch.html')
 
 @app.route("/MembershipSearch",methods=['GET','POST'])
 def MembershipSearch():
