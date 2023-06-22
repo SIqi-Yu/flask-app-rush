@@ -352,7 +352,7 @@ def challengeFormSubmit():
 
 
 
-#---------q4---------------
+#---------q3---------------
 
 # Question 3 Start
 @app.route('/q3MAID')
@@ -552,6 +552,7 @@ def q3searchMEIDSubmit():
     return render_template('Q3.5_Player.html')
 
 # Question 3 End
+ 
  
 # Question 4
 @app.route("/MSbase")
