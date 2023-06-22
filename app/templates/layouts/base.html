@@ -49,35 +49,44 @@
 
       <nav id="navbar" class="navbar">
         <ul>
-          <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
+          <li><a class="nav-link scrollto active" href={{url_for('index')}}>Home</a></li>
+          <li><a class="nav-link scrollto" href={{url_for('about')}}>About</a></li>
           <li class="dropdown"><a href="#"><span>Register/Log</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
               <li><a href={{url_for('q1register')}}>Register</a></li>
               <li><a href={{url_for('q1login')}}>Log in</a></li>
               <li><a href={{url_for('q1modify')}}>Modify individual info</a></li>
               <li><a href={{url_for('q1delete')}}>Delete individual info</a></li>
-              <li><a class="nav-link scrollto" href={{url_for('q1chart1')}}>visualize club members by Age</a></li>
-              <li><a class="nav-link scrollto" href={{url_for('q1chart2')}}>visualize club members by Gender</a></li>
-              <li><a class="nav-link scrollto" href={{url_for('q1chart3')}}>visualize club members by UTR</a></li>
+              <li class="dropdown"><a href="#"><span>visualize club members</span> <i class="bi bi-chevron-right"></i></a>
+                <ul>
+                  <li><a href={{url_for('q1chart1')}}>visualize club members by Age</a></li>
+                  <li><a href={{url_for('q1chart2')}}>visualize club members by Gender</a></li>
+                  <li><a href={{url_for('q1chart3')}}>visualize club members by UTR</a></li>
+                </ul>
+              </li>
             </ul>
           </li>
           <li><a class="nav-link scrollto" href="{{url_for('q2log')}}">Challenge</a></li>
           <li class="dropdown"><a href="#"><span>Match</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
+
+              <li><a href={{url_for('q3MAID')}}>Create/Modify a match</a></li>
+              <li><a href={{url_for('q3MAIDdelete')}}>Delete a match</a></li>
+              <li><a href={{url_for('q3MAIDsearch')}}>Search a match</a></li>
+              <li><a href={{url_for('q3player')}}>See a data graph</a></li>
+
               <li><a class="nav-link scrollto" href={{url_for('q3MAID')}}>Create/Modify a match</a></li>
               <li><a class="nav-link scrollto" href={{url_for('q3MAIDdelete')}}>Delete a match</a></li>
               <li><a class="nav-link scrollto" href={{url_for('q3MAIDsearch')}}>Search a match</a></li>
               <li><a class="nav-link scrollto" href={{url_for('q3player')}}>See a data graph</a></li>
+
             </ul>
           </li>
-            
-
-          <li><a class="nav-link scrollto" href="#screenshots">Match</a></li>
-          <li><a href={{url_for("MSbase")}} class="nav-link scrollto" href="#team">Membership</a></li>
+          <li><a class="nav-link scrollto" href={{url_for("MSbase")}}>Membership</a></li>
           <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
-      </nav><!-- .navbar -->
+      </nav>
 
     </div>
   </header><!-- End Header -->
@@ -124,6 +133,21 @@
               <li><a href="#">Create/Modify challenge</a></li>
               <li><a href="#">Accept/Delete challenge</a></li>
               <li><a href="#">Check win/loss charts</a></li>
+            </ul>
+
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-md-3 col-lg-2">
+          <div class="list-menu">
+
+            <h4>Match information</h4>
+
+            <ul class="list-unstyled">
+              <li><a href="#">Create/Modify a match</a></li>
+              <li><a href="#">Delete a match</a></li>
+              <li><a href="#">Search a match</a></li>
+              <li><a href="#">See a data graph</a></li>
             </ul>
 
           </div>
