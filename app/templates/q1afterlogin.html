@@ -22,17 +22,18 @@
           <li><a class="nav-link scrollto active" href={{url_for('q1login')}}>Log in</a></li>
           <li><a class="nav-link scrollto" href={{url_for('q1modify')}}>Modify your information</a></li>
           <li><a class="nav-link scrollto" href={{url_for('q1delete')}}>Delete your information</a></li>
-          <li><a class="nav-link scrollto" href={{url_for('q1charts')}}>visualize the number of club members</a></li>
+          <li class="dropdown"><a href="#"><span>Charts</span> <i class="bi bi-chevron-down"></i></a>
+            <ul>
+              <li><a class="nav-link scrollto" href={{url_for('q1chart1')}}>visualize club members by Age</a></li>
+              <li><a class="nav-link scrollto" href={{url_for('q1chart2')}}>visualize club members by Gender</a></li>
+              <li><a class="nav-link scrollto" href={{url_for('q1chart3')}}>visualize club members by UTR</a></li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <br>
       <h3>Good {{ greeting }}! Welcome to our tennis club and Your MEID is: {{session['meid']}}</h3>
-      <br>
-      <br>
-      <h3>Now, you are able to create/modify/accept/delete challenge!(Please click challenge)</h3>
-      <br>
-      <h3>           <a href={{url_for('q2logSubmit')}}><mark>challenge.</mark></a></h3>
-      
+      <br>     
       {% with messages = get_flashed_messages() %} <!-- function: flash显示的message储存在message里 -->
       <ul>
       {% for message in messages %} <!-- 将每一个message放在unorder list里面 -->

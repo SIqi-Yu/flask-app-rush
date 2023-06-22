@@ -1,0 +1,39 @@
+{% extends 'layouts/base.html'%}
+{% block title%}Log in Page{% endblock title %}
+{%block content%}
+<main id="main">
+  <section class="inner-page">
+    <div class="container">
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+      <form method="post" action="{{url_for('q2logSubmit')}}">
+        <div class="row mb-3">
+          <label for="cmeid" class="col-sm-2 col-form-label">Your MEID</label>
+          <div class="col-sm-10">
+            <input type="number" name='cmeid' class="form-control" id="cmeid" name="cmeid" value="{{cmeid}}">
+          </div>
+        </div>
+
+        <div class="row mb-3">
+            <label for="cpass" class="col-sm-2 col-form-label">Your Password:</label>
+            <div class="col-sm-10">
+              <input type="password" name='cpass' class="form-control" id="cpass" name="cpass">
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+      {% with messages = get_flashed_messages() %}
+        <ul>
+        {% for message in messages %}
+          <li>{{message}}</li>
+        {% endfor %}
+        </ul>
+      {% endwith %}
+    </div>
+  </section>
+</main>
+{%endblock content%}

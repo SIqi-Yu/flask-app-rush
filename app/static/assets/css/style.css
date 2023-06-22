@@ -21,11 +21,17 @@ h4,
 h5,
 h6 {
   margin: 0;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 
 h2 {
   color: #000;
   font-weight: 600;
+}
+h3 {
+  color: #4e5949;
+  font-weight: 540;
+  font-size: 20px;
 }
 
 h4 {
@@ -39,8 +45,14 @@ h4 {
 
 h5 {
   color: #626262;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
+}
+
+form{
+  border:15px,solid, #050505;
+  background-color: #d8e6df;
+  padding: 50px;
 }
 
 a {
@@ -186,11 +198,13 @@ span {
 */
 .navbar {
   padding: 0;
+  font-size: 14px;
 }
 
 .navbar ul {
   margin: 0;
   padding: 0;
+  font-size: 15px;
   display: flex;
   list-style: none;
   align-items: center;
@@ -198,6 +212,7 @@ span {
 
 .navbar li {
   position: relative;
+  font-size: 14px;
 }
 
 .navbar a,
@@ -207,7 +222,7 @@ span {
   justify-content: space-between;
   padding: 10px 0 10px 30px;
   font-family: "Roboto", sans-serif;
-  font-size: 15px;
+  font-size: 17px;
   color: #222;
   white-space: nowrap;
   transition: 0.3s;
@@ -216,7 +231,7 @@ span {
 
 .navbar a i,
 .navbar a:focus i {
-  font-size: 12px;
+  font-size: 17px;
   line-height: 0;
   margin-left: 5px;
 }
@@ -226,6 +241,7 @@ span {
 .navbar .active:focus,
 .navbar li:hover>a {
   color: #71c55d;
+  font-size: 17px;
 }
 
 .navbar .dropdown ul {

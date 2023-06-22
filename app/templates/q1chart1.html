@@ -4,7 +4,7 @@
 <script src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js"></script>
 <script src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.candy.js"></script>
 <script>
-    var data1 = JSON.parse({{chartData1 | tojson | safe}})
+    var data = JSON.parse({{chartData | tojson | safe}})
     const dataSource = {
         chart: {
           caption: "Lead sources by industry",
@@ -14,7 +14,7 @@
           plottooltext: "<b>$dataValue</b> leads received",
           theme: "candy"
         },
-        data: data1
+        data: data
     };
       
       FusionCharts.ready(function() {
@@ -28,10 +28,13 @@
         }).render();
       });
 
+      
+
 </script>
 <main id="main">
-  <section class="breadcrumbs">
+  <section class="inner-page">
     <div class="container">
+        <br>
         <br>
         <ol>
           <li><a href="index.html">Home</a></li>
@@ -39,13 +42,21 @@
         </ol>
         <h2>Login Page</h2>
         <br>
+        <br>
+        <br>
         <nav id="navbar" class="navbar bg-light">
           <ul>
             <li><a class="nav-link scrollto" href={{url_for('q1register')}}>Register</a></li>
             <li><a class="nav-link scrollto" href={{url_for('q1login')}}>Log in</a></li>
             <li><a class="nav-link scrollto" href={{url_for('q1modify')}}>Modify your information</a></li>
             <li><a class="nav-link scrollto" href={{url_for('q1delete')}}>Delete your information</a></li>
-            <li><a class="nav-link scrollto active" href={{url_for('q1charts')}}>visualize the number of club members</a></li>
+            <li class="dropdown"><a href="#"><span>Charts</span> <i class="bi bi-chevron-down"></i></a>
+              <ul>
+                <li><a class="nav-link scrollto active" href={{url_for('q1chart1')}}>visualize club members by Age</a></li>
+                <li><a class="nav-link scrollto" href={{url_for('q1chart2')}}>visualize club members by Gender</a></li>
+                <li><a class="nav-link scrollto" href={{url_for('q1chart3')}}>visualize club members by UTR</a></li>
+              </ul>
+            </li>
           </ul>
         </nav>
         <div id="chart-container"></div>
@@ -58,5 +69,13 @@
       {% endwith %}
     </div>
   </section>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
 </main>
 {%endblock content%}

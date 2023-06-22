@@ -11,16 +11,16 @@
       </ol>
       <h2>Challenge</h2>
 
-    </div>
-  </section><!-- End Breadcrumbs -->
-  <br>
-  <br>
-  <br>
-
-  <section class="inner-page">
-    <div class="container">
-      you create a new challenge, here is the information:
-      <table class="table">
+      <nav id="navbar" class="navbar bg-light">
+        <ul>
+          <li><a class="nav-link scrollto active" href={{url_for('create')}}>create a new challenge</a></li>
+          <li><a class="nav-link scrollto" href={{url_for('address')}}>address challenge</a></li>
+          <li><a class="nav-link scrollto" href={{url_for('graph')}}>Check your win percentage</a></li>
+        </ul>
+      </nav>
+      <br>
+      <h3>you create a new challenge, here is the information:</h3>
+      <table class="table table-striped">
         <thead>
           <tr>
             <th scope="col">CID</th>
@@ -47,8 +47,12 @@
         {% endfor %}
         </ul>
       {% endwith %}
+
     </div>
-  </section>
+  </section><!-- End Breadcrumbs -->
+  <br>
+  <br>
+  <br>
 
 </main><!-- End #main -->
 

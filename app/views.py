@@ -6,23 +6,7 @@ from datetime import datetime
 
 # App modules
 from app import app, db
-from app.models import Member, Challenge, Tmatch
-
-
-# -*- encoding: utf-8 -*-
-"""
-Copyright (c) 2019 - present AppSeed.us
-"""
-
-# Flask modules
-from flask   import render_template,json,request, redirect, url_for, flash, session
-from jinja2  import TemplateNotFound
-from datetime import datetime
-# App modules
-from app import app, db
-from app.models import membership
-# from app.models import Profiles
-
+from app.models import Member, Challenge, Tmatch, membership
 
 @app.route('/')
 def index():
@@ -200,31 +184,59 @@ def afterdelete():
             flash('Incorrect MEID or Password')
             return render_template('q1delete.html',meid=meid,password=password)     
 
-@app.route('/q1chart')
-def q1charts():
+@app.route('/q1chart1')
+def q1chart1():
     result=db.session.query(Member.Gender.label('label'), func.count(Member.MEID).label('value')).group_by('Gender')
     chartData1 = [row._asdict() for row in result]
     chartData1 = json.dumps(chartData1)
-    
-    result=db.session.query(Member.Age.label('label'), func.count(Member.MEID).label('value')).group_by('Age')
+    return render_template('q1chart1.html', chartData = chartData1)
+
+@app.route('/q1chart2')
+def q1chart2():
+    result=db.session.query(func.count(Member.MEID).label('value')).group_by('Age')
     chartData2 = [row._asdict() for row in result]
     chartData2 = json.dumps(chartData2)
-    
-    return render_template('q1chart.html', chartData1 = chartData1, chartData2=chartData2)
+     
+    return render_template('q1chart2.html', chartData = chartData2)
 
+@app.route('/q1chart3')
+def q1chart3():
+    result=db.session.query(Member.UTR.label('label'), func.count(Member.MEID).label('value')).group_by('UTR')
+    chartData3 = [row._asdict() for row in result]
+    chartData3 = json.dumps(chartData3)
+     
+    return render_template('q1chart3.html', chartData = chartData3)
 
 
 
 
 # ---------q2----------
+@app.route('/q2log')
+def q2log():
+    return render_template('challenge_log.html')
+    
 #after log
-@app.route('/q2logsubmit')
+@app.route('/q2logsubmit', methods=['GET', 'POST'])
 def q2logSubmit():
-
+    # Get the user input values
+    c_meid = request.form.get('cmeid')
+    c_pass = request.form.get('cpass')   
+    #check error
+    if not c_meid or not c_pass:
+        flash('You need to input your MEID and password')
+    else:
+        c_member = Member.query.get(c_meid)
+        if c_pass==c_member.MPassword:
+        #save the supplierID and company name into session, 
+            session['c_meid'] = c_meid
             currentHour = datetime.now().hour
             greeting = "morning" if currentHour < 12 else "afternoon"
-            filtered_challenges = Challenge.query.filter(Challenge.ChallengedMEID==int(session['meid'])).all()
+            filtered_challenges = Challenge.query.filter(Challenge.ChallengerMEID==int(session['c_meid'])).all()
             return render_template('challenge_afterlog.html', greeting=greeting, filtered_challenges = filtered_challenges)
+        else:
+            flash('Invalid MEID or Passwords')
+            return render_template('challenge_log.html',cmeid=c_meid, cpass=c_pass)
+
                 
 # afterlog -- create a new challenge
 @app.route('/q2create')
@@ -234,22 +246,23 @@ def create():
 ## afterlog -- address challenge request
 @app.route('/q2address')
 def address():
-    filtered_challenges = Challenge.query.filter(Challenge.ChallengedMEID==int(session['meid'])).all()
+    filtered_challenges = Challenge.query.filter(Challenge.ChallengerMEID==int(session['c_meid'])).all()
     return render_template('address_challenge.html', filtered_challenges = filtered_challenges)
+
 ## afterlog -- show chart
 @app.route('/q2graph', methods=['GET', 'POST'])
 def graph():
-    c_meid = session.get('meid')
+    c_meid = session.get('c_meid')
     result_win = db.session.query(Tmatch.WinnerMEID.label('Wins'), 
                                   func.count(Tmatch.WinnerMEID).label('value')).filter(Tmatch.WinnerMEID==c_meid)
     result_lose = db.session.query(Tmatch.LoserMEID.label('Loses'), 
                                    func.count(Tmatch.LoserMEID).label('value')).filter(Tmatch.LoserMEID==c_meid)
     
-    chartData1 = [row._asdict() for row in result_win]
-    chartData2 = [row._asdict() for row in result_lose]
-    chartData = chartData1 + chartData2
-    chartData = json.dumps(chartData)
-    return render_template('challenge_graph.html', chartData=chartData)
+    q2chartData1 = [row._asdict() for row in result_win]
+    q2chartData2 = [row._asdict() for row in result_lose]
+    q2chartData = q2chartData1 + q2chartData2
+    q2chartData = json.dumps(q2chartData)
+    return render_template('challenge_graph.html', q2chartData=q2chartData)
 
 
 ## address request -- delete row in database
@@ -265,11 +278,12 @@ def requestSubmit():
         else:
             db.session.delete(delete_challenge)
             db.session.commit()
-            return render_template('address_challenge.html')
+            filtered_challenges = Challenge.query.filter(Challenge.ChallengerMEID==int(session['c_meid'])).all()
+            return render_template('address_challenge.html',filtered_challenges=filtered_challenges)
 
 @app.route('/allcha', methods=['GET', 'POST'])
 def challengerinfo():
-    filtered_challenges = Challenge.query.filter(Challenge.ChallengedMEID==int(session['meid'])).all()
+    filtered_challenges = Challenge.query.filter(Challenge.ChallengerMEID==int(session['c_meid'])).all()
     return render_template('challenge_info.html', filtered_challenges = filtered_challenges)
 
 #create new challenge information
@@ -289,9 +303,7 @@ def challengeFormSubmit():
         flash('The CID is required')
         error = True
     else:
-        if Challenge.query.get(c_id):
-            flash('The CID has already exists, please change another CID')
-            error = True
+        c_id=int(c_id)
     
     if not challenger_meid:
         flash('The challenger id is required')
@@ -315,18 +327,16 @@ def challengeFormSubmit():
         flash('The challenge date is required')
         error = True
         
-    
+    challenge = Challenge.query.get(c_id)
     if not error:
-        challenge = ''
         if not challenge:
             challenge=Challenge(CID = c_id, ChallengerMEID=challenger_meid, ChallengedMEID=challenged_meid, DateOfChallenge=c_date, Notes=c_note)
             db.session.add(challenge)
             db.session.commit()
             db.session.refresh(challenge)
-            flash('A new challenge with CID='+str(challenge.CID)+'has been added')
+            flash('A new challenge with CID = '+str(challenge.CID)+' has been added')
             return render_template('challenge_info.html', challenge=challenge)
         else:
-            c_id=int(c_id)
             challenge=Challenge.query.get(c_id)
             challenge.CID = c_id
             challenge.ChallenderMEID=challenger_meid
@@ -335,10 +345,14 @@ def challengeFormSubmit():
             challenge.Notes=c_note
             challenge.verified=True
             db.session.commit()
-            flash("You update Challenging information.The challenge with CID"+str(c_id)+'has been updated.')
+            flash("You update Challenging information.The challenge with CID = "+str(c_id)+' has been modified and updated.')
             return render_template('create_info.html', challenge=challenge)
     else:
         return render_template('create_challenge.html',error=error, cid=c_id, challengerID=challenger_meid, challengedID=challenged_meid, date=c_date, note=c_note)
+
+
+
+#---------q4---------------
 
 # Question 3 Start
 @app.route('/q3MAID')
@@ -406,6 +420,7 @@ def q3MAIDSubmit():
         elif q3cerm2 == 7 and q3cedm2 == 7:
             flash('Please input the right score for match 2!')
             error = True
+
 
     # Match 3
     if (q3cerm1==7 and q3cerm2==7) or (q3cedm1==7 and q3cedm2==7):
@@ -678,4 +693,3 @@ def membership_chart(year):
     chart_data = json.dumps(chart_data)
 
     return render_template("MSgraph.html", chart_data=chart_data)
-

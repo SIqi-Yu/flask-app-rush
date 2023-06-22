@@ -7,9 +7,15 @@
 <main id="main">
     <br>
     <br>
-    <br>
-    <br>
-    <br>
+
+    <section id="breadcrumbs" class="breadcrumbs">
+      <div class="container">
+        <ol>
+          <li><a href="index.html">Home</a></li>
+          <li>Membership</li>
+        </ol>
+        <h2>Membership</h2>
+        <br>
           <!--jinjia-->
           {%with messages = get_flashed_messages()%}
             {% if messages %}
@@ -20,14 +26,13 @@
             </ul>
             {%endif%}
           {%endwith%}
-
           <div class="btn-group">
             <a href={{url_for('MembershipSearch')}} class="btn btn-primary active" aria-current="page">Membership Search</a>
             <a href={{url_for('membershipCreate')}} class="btn btn-primary">Membership Create</a>
             <a href={{url_for("MSbase")}} class="btn btn-primary">MSbase</a>
-        </div>
-        </div>
-      </section>
+          </div>
+      </div>
+    </section>
  
 
 
