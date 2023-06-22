@@ -12,13 +12,17 @@
       <br>
       <nav id="navbar" class="navbar bg-light">
         <ul>
-          <li><a class="nav-link scrollto" href={{url_for('q1register')}}>Register</a></li>
+          <li><a class="nav-link scrollto active" href={{url_for('q1register')}}>Register</a></li>
           <li><a class="nav-link scrollto" href={{url_for('q1login')}}>Log in</a></li>
-          <li><a class="nav-link scrollto active" href={{url_for('q1modify')}}>Modify your information</a></li>
+          <li><a class="nav-link scrollto" href={{url_for('q1modify')}}>Modify your information</a></li>
           <li><a class="nav-link scrollto" href={{url_for('q1delete')}}>Delete your information</a></li>
-          <li><a class="nav-link scrollto" href={{url_for('q1chart1')}}>visualize club members by Age</a></li>
-          <li><a class="nav-link scrollto" href={{url_for('q1chart2')}}>visualize club members by Gender</a></li>
-          <li><a class="nav-link scrollto" href={{url_for('q1chart3')}}>visualize club members by UTR</a></li>
+          <li class="dropdown"><a href="#"><span>Charts</span> <i class="bi bi-chevron-down"></i></a>
+            <ul>
+              <li><a class="nav-link scrollto" href={{url_for('q1chart1')}}>visualize club members by Age</a></li>
+              <li><a class="nav-link scrollto" href={{url_for('q1chart2')}}>visualize club members by Gender</a></li>
+              <li><a class="nav-link scrollto" href={{url_for('q1chart3')}}>visualize club members by UTR</a></li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <br>
