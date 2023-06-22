@@ -1,5 +1,32 @@
+
 {% extends 'layouts/base.html'%}
 {% block title%}Register{% endblock title %}
+
+<script>
+  function showWarning() {
+    var popup = document.getElementById("warningPopup");
+    popup.style.display = "block";
+  }
+  
+  function hideWarning() {
+    var popup = document.getElementById("warningPopup");
+    popup.style.display = "none";
+  }
+</script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta author="Lucy Yu">
+    <meta description="...">
+    <meta keywords="homework html misy350">
+    <!--#used by search engine (spider)-->
+
+</head>
+
+
 {%block content%}
 <main id="main">
   <section class="breadcrumbs">
@@ -46,6 +73,7 @@
         </div>
         
         <button type="submit" class="btn btn-primary">DELETE</button>
+ 
       </form>
 
       <!-- 信息保留，显示在网页 -->

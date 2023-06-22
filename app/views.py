@@ -197,7 +197,9 @@ def afterdelete():
             db.session.delete(member)
             db.session.commit()
             flash('Your Information has been deleted')
-            return render_template('base.html')
+            session.clear()
+            return render_template('index.html')
+        
         else:
             flash('Incorrect MEID or Password')
             return render_template('q1delete.html',meid=meid,password=password)     
@@ -226,34 +228,6 @@ def q1chart3():
     return render_template('q1chart3.html', chartData = chartData3)
 
 
-
-
-# ---------q2----------
-@app.route('/q2log')
-def q2log():
-    return render_template('challenge_log.html')
-    
-#after log
-@app.route('/q2logsubmit', methods=['GET', 'POST'])
-def q2logSubmit():
-    # Get the user input values
-    meid = request.form.get('cmeid')
-    c_pass = request.form.get('cpass')   
-    #check error
-    if not meid or not c_pass:
-        flash('You need to input your MEID and password')
-    else:
-        c_member = Member.query.get(meid)
-        if c_pass==c_member.MPassword:
-        #save the supplierID and company name into session, 
-            session['meid'] = meid
-            currentHour = datetime.now().hour
-            greeting = "morning" if currentHour < 12 else "afternoon"
-            filtered_challenges = Challenge.query.filter(Challenge.ChallengerMEID==int(session['meid'])).all()
-            return render_template('challenge_afterlog.html', greeting=greeting, filtered_challenges = filtered_challenges)
-        else:
-            flash('Invalid MEID or Passwords')
-            return render_template('challenge_log.html',cmeid=meid, cpass=c_pass)
 
                 
 # afterlog -- create a new challenge
