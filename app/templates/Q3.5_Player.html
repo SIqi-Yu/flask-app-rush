@@ -1,0 +1,36 @@
+{% extends "layouts/base.html" %}
+{% block title %} Search your MEID {% endblock title %} 
+
+{% block content %}
+<main id="main">
+
+    <section class="inner-page">
+        <div class="container">
+            <br>
+            <br>
+            <br>
+            <br>
+            <h3>Show your winning and losing data in a graph.</h3>
+            <br>
+            <form method="post" action="{{url_for('q3searchMEIDSubmit')}}">
+              <div class="row mb-3">
+                <label for="searchMEID" class="col-sm-2 col-form-label"> Enter your MEID:</label>
+                <div class="col-sm-10">
+                  <input type="number" class="form-control" id="q3smeid" name="q3smeid">
+                </div>
+              </div>
+                <button type="submit" class="btn btn-primary">Sign in</button>
+            </form>
+
+            {% with messages = get_flashed_messages() %}
+                <ul>
+                    {% for message in messages %}
+                        <li>{{message}}</li>
+                    {% endfor %}
+                </ul>
+            {% endwith %}
+        </div>
+    </section>
+
+</main><!-- End #main -->
+{% endblock content %}

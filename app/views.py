@@ -340,9 +340,205 @@ def challengeFormSubmit():
     else:
         return render_template('create_challenge.html',error=error, cid=c_id, challengerID=challenger_meid, challengedID=challenged_meid, date=c_date, note=c_note)
 
- 
- 
+# Question 3 Start
+@app.route('/q3MAID')
+def q3MAID():
+    challenges = Challenge.query.all()
+    return render_template('Q3.1_MAID.html', q3allchallenges=challenges)
 
+@app.route('/q3MAIDsubmit', methods=['GET', 'POST'])
+def q3MAIDSubmit():
+    # get user input values
+    q3cid = request.form.get('q3cid')
+    q3maid = request.form.get('q3maid')
+    q3dom = request.form.get('q3dom')
+    q3cerm1 = request.form.get('q3cerm1')
+    q3cedm1 = request.form.get('q3cedm1')
+    q3cerm2 = request.form.get('q3cerm2')
+    q3cedm2 = request.form.get('q3cedm2')
+    q3cerm3 = request.form.get('q3cerm3')
+    q3cedm3 = request.form.get('q3cedm3')
+    
+    # check information input error
+    error = False
+    if not q3cid:
+        flash('Challenge ID is required!')
+        error = True
+    else:
+        q3cid=int(q3cid)
+    
+    if not q3maid:
+        flash('Match ID is required!')
+        error = True
+    else:
+        q3maid=int(q3maid)
+        
+    if not q3dom:
+        flash('Date of match is required!')
+        error = True
+    
+    # check score input error
+    # Match 1
+    if not q3cerm1 or not q3cedm1:
+        flash('Set score for the first match!')
+        error = True
+    else:
+        q3cerm1 = int(q3cerm1)
+        q3cedm1 = int(q3cedm1)
+        if q3cerm1 != 7 and q3cedm1 != 7:
+            flash('The first match was not finished!')
+            error = True
+        elif q3cerm1 == 7 and q3cedm1 == 7:
+            flash('Please input the right score for match 1!')
+            error = True
+
+
+    # Match 2
+    if not q3cerm2 or not q3cedm2:
+        flash('Set score for the second match!')
+        error = True
+    else:
+        q3cerm2 = int(q3cerm2)
+        q3cedm2 = int(q3cedm2)
+        if q3cerm2 != 7 and q3cedm2 != 7:
+            flash('The second match was not finished!')
+            error = True
+        elif q3cerm2 == 7 and q3cedm2 == 7:
+            flash('Please input the right score for match 2!')
+            error = True
+
+    # Match 3
+    if (q3cerm1==7 and q3cerm2==7) or (q3cedm1==7 and q3cedm2==7):
+        if q3cerm3 or q3cedm3:
+            flash('The third match is not required!')
+            error = True
+        else:
+            q3cerm3=0
+            q3cedm3=0
+    else:
+        if not q3cerm3 or not q3cedm3:
+            flash('Set score for the third match!')
+            error = True
+        else:
+            q3cerm3 = int(q3cerm3)
+            q3cedm3 = int(q3cedm3)
+            if q3cerm3 != 10 and q3cedm3 != 10:
+                flash('The third match was not finished!')
+                error = True
+            elif q3cerm3 == 10 and q3cedm3 == 10:
+                flash('Please input the right score for match 3!')
+                error = True
+               
+            
+    # database operation
+    if not error:
+        # winner set
+        if (q3cerm1==7 and q3cerm2==7) or (q3cerm1==7 and q3cerm3==10) or (q3cerm2==7 and q3cerm3==10):
+            q3winnerid = Challenge.query.get(q3cid).ChallengerMEID
+            q3loserid = Challenge.query.get(q3cid).ChallengedMEID
+        else:
+            q3winnerid = Challenge.query.get(q3cid).ChallengedMEID
+            q3loserid = Challenge.query.get(q3cid).ChallengerMEID
+            
+        q3match = Tmatch.query.get(q3maid)
+        
+        if q3match is None:
+            # add a new match record
+            q3match = Tmatch(MAID=q3maid, CID=q3cid, DateOfMatch=q3dom, 
+                           MEID1Set1Score=q3cerm1, MEID2Set1Score=q3cedm1, 
+                           MEID1Set2Score=q3cerm2, MEID2Set2Score=q3cedm2,
+                           MEID1Set3Score=q3cerm3, MEID2Set3Score=q3cedm3, 
+                           WinnerMEID=q3winnerid, LoserMEID=q3loserid)
+            db.session.add(q3match)
+            db.session.commit()
+            db.session.refresh(q3match)
+            flash("A new match with ID=" + str(q3match.MAID) + " has been added.")
+        else:              
+            # modify an existing match
+            q3match.CID = q3cid
+            q3match.DateOfMatch = q3dom
+            q3match.MEID1Set1Score = q3cerm1
+            q3match.MEID2Set1Score = q3cedm1
+            q3match.MEID1Set2Score = q3cerm2
+            q3match.MEID2Set2Score = q3cedm2
+            q3match.MEID1Set3Score = q3cerm3
+            q3match.MEID2Set3Score = q3cedm3
+            q3match.WinnerMEID = q3winnerid
+            q3match.LoserMEID = q3loserid
+            
+            q3match.verfied=True
+            db.session.commit()
+            flash("A match with ID=" + str(q3match.MAID) + " has been updated.")
+            
+        return render_template('Q3.2_Table.html', q3updatedmatch = q3match)
+    
+    challenges = Challenge.query.all()
+    return render_template('Q3.1_MAID.html', q3maid=q3maid, q3cid=q3cid, q3dom=q3dom, q3allchallenges=challenges)
+
+@app.route('/q3delete')
+def q3MAIDdelete():
+    maid = Tmatch.query.all()
+    return render_template('Q3.3_Delete.html', q3allmaid=maid)
+
+@app.route('/q3deletesubmit', methods=['GET', 'POST'])
+def q3deleteMAIDSubmit():
+    q3dmaid = request.form.get('q3dmaid')
+    
+    error = False
+    if not q3dmaid:
+        flash('The MAID you want to delete is required!')
+        error = True
+        
+    if not error:
+        db.session.delete(Tmatch.query.get(q3dmaid))
+        db.session.commit()
+        flash("A match with ID=" + q3dmaid + " has been deleted.")
+    maid = Tmatch.query.all()
+    return render_template('Q3.3_Delete.html', q3allmaid=maid)
+
+@app.route('/q3search')
+def q3MAIDsearch():
+    maid = Tmatch.query.all()
+    return render_template('Q3.4_Search.html', q3allmaid=maid)
+
+@app.route('/q3searchsubmit', methods=['GET', 'POST'])
+def q3searchMAIDSubmit():
+    q3smaid = request.form.get('q3smaid')
+    
+    error = False
+    if not q3smaid:
+        flash('The MAID you want to search is required!')
+        error = True
+        
+    if not error:
+        match = Tmatch.query.get(q3smaid)
+        return render_template('Q3.2_Table.html', q3updatedmatch = match)
+    
+@app.route('/q3player')
+def q3player():
+    return render_template('Q3.5_Player.html')
+
+@app.route('/q3playersubmit', methods=['GET', 'POST'])
+def q3searchMEIDSubmit():
+    q3smeid = request.form.get('q3smeid')
+    error = False
+    if not q3smeid:
+        flash('The MEID you want to search is required!')
+        error = True
+        
+    if not error:
+        win = db.session.query(Tmatch.WinnerMEID.label('label'), func.count(Tmatch.WinnerMEID).label('value')).filter(Tmatch.WinnerMEID==q3smeid)
+        lose = db.session.query(Tmatch.LoserMEID.label('label'), func.count(Tmatch.LoserMEID).label('value')).filter(Tmatch.LoserMEID==q3smeid)
+        q3chartData1 = [row._asdict() for row in win]
+        q3chartData2 = [row._asdict() for row in lose]
+        q3chartData = json.dumps(q3chartData1 + q3chartData2)
+        return render_template('Q3.6_Graph.html', q3chartData=q3chartData)
+    
+    return render_template('Q3.5_Player.html')
+
+# Question 3 End
+ 
+# Question 4
 @app.route("/MSbase")
 def MSbase():
     return render_template('MSbase.html')
