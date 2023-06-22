@@ -4,7 +4,7 @@
 <script src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js"></script>
 <script src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.candy.js"></script>
 <script>
-    var data = JSON.parse({{chartData | tojson | safe}})
+    var data = JSON.parse({{q2chartData | tojson | safe}})
     const dataSource = {
         chart: {
           caption: "You win/loss counts",

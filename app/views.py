@@ -258,11 +258,11 @@ def graph():
     result_lose = db.session.query(Tmatch.LoserMEID.label('Loses'), 
                                    func.count(Tmatch.LoserMEID).label('value')).filter(Tmatch.LoserMEID==c_meid)
     
-    chartData1 = [row._asdict() for row in result_win]
-    chartData2 = [row._asdict() for row in result_lose]
-    chartData = chartData1 + chartData2
-    chartData = json.dumps(chartData)
-    return render_template('challenge_graph.html', chartData=chartData)
+    q2chartData1 = [row._asdict() for row in result_win]
+    q2chartData2 = [row._asdict() for row in result_lose]
+    q2chartData = q2chartData1 + q2chartData2
+    q2chartData = json.dumps(q2chartData)
+    return render_template('challenge_graph.html', q2chartData=q2chartData)
 
 
 ## address request -- delete row in database
