@@ -152,7 +152,7 @@ const maleData = categoryLabels.map(function(cat) {
      var chart = new FusionCharts({
        type: "msbar3d",
        renderAt: "chart-container",
-       width: "100%",
+       width: "80%",
        height: "400",
        dataFormat: "json",
        dataSource: dataSource
@@ -176,8 +176,7 @@ const maleData = categoryLabels.map(function(cat) {
         </ol>
         <h2>Login Page</h2>
         <br>
-        <br>
-        <br>
+        
 
         <nav id="navbar" class="navbar bg-light">
           <ul>
@@ -198,7 +197,9 @@ const maleData = categoryLabels.map(function(cat) {
             </li>
           </ul>
         </nav>
-        <div id="chart-container"></div>
+        <br>
+        <br>
+        <div id="chart-container" style="text-align: center;"></div>
       {% with messages = get_flashed_messages() %}
         <ul>
         {% for message in messages %}

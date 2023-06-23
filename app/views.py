@@ -543,6 +543,7 @@ def q3searchMEIDSubmit():
         q3chartData1 = [row._asdict() for row in win]
         q3chartData2 = [row._asdict() for row in lose]
         q3chartData = json.dumps(q3chartData1 + q3chartData2)
+
         return render_template('Q3.6_Graph.html', q3chartData=q3chartData)
     
     return render_template('Q3.5_Player.html')
