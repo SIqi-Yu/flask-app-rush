@@ -13,7 +13,11 @@
       <nav id="navbar" class="navbar bg-light">
         <ul>
           <li><a class="nav-link scrollto active" href={{url_for('q1register')}}>Register</a></li>
-          <li><a class="nav-link scrollto" href={{url_for('q1login')}}>Log in</a></li>
+          {%if not session.get('meid'):%}
+            <li><a class="nav-link scrollto" href={{url_for('q1login')}}>Log in</a></li>
+          {%else:%}
+            <li><a class="nav-link scrollto" href={{url_for('q1logout')}}>Log out</a></li>
+          {%endif%}
           <li><a class="nav-link scrollto" href={{url_for('q1modify')}}>Modify your information</a></li>
           <li><a class="nav-link scrollto" href={{url_for('q1delete')}}>Delete your information</a></li>
           <li class="dropdown"><a href="#"><span>Charts</span> <i class="bi bi-chevron-down"></i></a>
