@@ -206,18 +206,11 @@ def afterdelete():
 
 @app.route('/q1chart1')
 def q1chart1():
-    result=db.session.query(Member.Gender.label('label'), func.count(Member.MEID).label('value')).group_by('Gender')
-    chartData1 = [row._asdict() for row in result]
-    chartData1 = json.dumps(chartData1)
-    return render_template('q1chart1.html', chartData = chartData1)
+    result = db.session.query(Member.Age.label('category'), Member.Gender.label('series'), func.count(Member.MEID).label('value')).group_by(Member.Age, Member.Gender)
+    chartData = [row._asdict() for row in result]
+    chartData = json.dumps(chartData)
+    return render_template('q1chart1.html', chartData=chartData)
 
-@app.route('/q1chart2')
-def q1chart2():
-    result=db.session.query(func.count(Member.MEID).label('value')).group_by('Age')
-    chartData2 = [row._asdict() for row in result]
-    chartData2 = json.dumps(chartData2)
-     
-    return render_template('q1chart2.html', chartData = chartData2)
 
 @app.route('/q1chart3')
 def q1chart3():

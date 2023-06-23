@@ -4,37 +4,6 @@
 {% block title %}Invoice Display{% endblock title %}
 
 {% block content %}
-  <style>
-    /* Custom CSS for the invoice layout */
-    .invoice-container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 20px;
-      border: 1px solid #ccc;
-    }
-
-    .invoice-header {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .invoice-table {
-      width: 100%;
-      margin-bottom: 20px;
-    }
-
-    .invoice-table th,
-    .invoice-table td {
-      padding: 10px;
-      border-bottom: 1px solid #ccc;
-    }
-
-    .invoice-total {
-      text-align: right;
-      margin-top: 20px;
-      font-weight: bold;
-    }
-  </style>
 
   
     <main id="main">
@@ -94,7 +63,33 @@
             <form method="post" action="{{url_for('MembershipDelete')}}">
 
   
-              <button type="submit" class="btn btn-primary">Delete</button>
+             <!--<button type="submit" class="btn btn-primary">Delete</button>--> 
+
+              
+        <!-- Button trigger modal -->
+
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target=".bs-example-modal-lg">Large  modal</button>
+
+        <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Warning</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    This will make you not one of our tennisclub members!
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Quit</button>
+                    <button type="submit" class="btn btn-primary">Delete Anyway</button>
+                  </div>
+                </div>
+            </div>
+        </div>
+
             </form>
 
     <div class="invoice-total">
@@ -114,3 +109,17 @@
   
   </div>
 {% endblock content %}
+
+<script src="/static/assets/js/jquery-3.1.1.min.js"></script>
+
+<script src="/static/assets/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="/static/assets/css/bootstrap.min.css"/>
+
+
+
+<script>
+  $(document).ready(function() {
+    console.log("Document ready!"); // Check if this message appears in the console
+    $('#exampleModal').modal('show');
+  });
+</script>
