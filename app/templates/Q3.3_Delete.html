@@ -27,8 +27,14 @@
     <section class="inner-page">
         <div class="container">
             <br>
-            <br>
-            <br>
+
+            {% with messages = get_flashed_messages() %}
+                <ul>
+                    {% for message in messages %}
+                        <li>{{message}}</li>
+                    {% endfor %}
+                </ul>
+            {% endwith %}
             <br>
             <form method="post" action="{{url_for('q3deleteMAIDSubmit')}}">
                 <div class="row mb-3">
@@ -42,15 +48,9 @@
                     </select>
                   </div>
                 </div>
-                <button type="submit" class="btn btn-danger">Delete</button>
+                {% include 'modal.html' %}
             </form>
-            {% with messages = get_flashed_messages() %}
-                <ul>
-                    {% for message in messages %}
-                        <li>{{message}}</li>
-                    {% endfor %}
-                </ul>
-            {% endwith %}
+
         </div>
     </section>
 
