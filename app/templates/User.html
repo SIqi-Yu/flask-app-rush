@@ -1,0 +1,61 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} User Only {% endblock title %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<main id="main">
+
+    <!-- ======= Breadcrumbs ======= -->
+    <section id="breadcrumbs" class="breadcrumbs">
+    <div class="container">
+  
+        <ol>
+          <li><a href="index.html">Home</a></li>
+          <li>Login Page</li>
+        </ol>
+        <h2>Login Page</h2>
+        <br>
+        <h2>Welcome to Admin Page</h2>
+        <h3>Good {{ greeting }}! Your MEID is: {{session['meid']}}</h3>
+        <h3>You can view the challenges of all club members and manage membership</h3>
+        <br>
+        <br>
+        <nav id="navbar" class="navbar">
+            <ul>
+              <li class="dropdown"><a href="#"><span>Your information</span> <i class="bi bi-chevron-down"></i></a>
+                <ul>
+                  <li><a href={{url_for('q1modify')}}>Modify individual info</a></li>
+                </ul>
+              </li>
+              <li class="dropdown"><a href="#"><span>Challenge</span> <i class="bi bi-chevron-down"></i></a>
+                <ul>
+                    <li><a class="nav-link scrollto" href={{url_for('create')}}>create a new challenge</a></li>
+                    <li><a class="nav-link scrollto" href={{url_for('address')}}>address challenge</a></li>
+                    <li><a class="nav-link scrollto" href={{url_for('graph')}}>Check your win percentage</a></li>
+                </ul>     
+              <li class="dropdown"><a href="#"><span>Match</span> <i class="bi bi-chevron-down"></i></a>
+                <ul>
+                  <li><a href={{url_for('q3MAID')}}>Create/Modify a match</a></li>
+                  <li><a href={{url_for('q3MAIDdelete')}}>Delete a match</a></li>
+                  <li><a href={{url_for('q3MAIDsearch')}}>Search a match</a></li>
+                  <li><a href={{url_for('q3player')}}>See a data graph</a></li>    
+                </ul>
+              </li>
+            </ul>
+            <i class="bi bi-list mobile-nav-toggle"></i>
+          </nav>
+          <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+    </div>
+    </section>
+</main>
+{% endblock content %}

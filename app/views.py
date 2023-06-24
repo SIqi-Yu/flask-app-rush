@@ -17,6 +17,14 @@ def index():
 def about():
     return render_template('about.html')
 
+@app.route('/admin')
+def admin():
+    return render_template('Admin.html')
+
+@app.route('/user')
+def user():
+    return render_template('User.html')
+
 #####-------q1------------
 #q1--register
 @app.route('/q1register')
@@ -35,9 +43,10 @@ def registersubmit():
     age=request.form.get('age')
     gender=request.form.get('gender')
     utr=request.form.get('utr')
+    admin=request.form.get('admin')
     
     error=False
-    if not meid or not email or not password or not firstname or not lastname or not phone or not age or not gender or not utr:
+    if not meid or not email or not password or not firstname or not lastname or not phone or not age or not gender or not utr or not admin:
         flash('The information but lastname is required')
         error=True
     else:
@@ -52,7 +61,7 @@ def registersubmit():
             meid=request.form.get('meid')
             meid=int(meid)
             date=datetime.now()
-            membership=Member(MEID = meid, FirstName=firstname,LastName=lastname,Email=email, Age=age,UTR=utr,Gender=gender,Phone=phone, MPassword=password, DateOfCreation=date)
+            membership=Member(MEID = meid, FirstName=firstname,LastName=lastname,Email=email, Age=age,UTR=utr,Gender=gender,Phone=phone, MPassword=password, DateOfCreation=date, IsAdmin=admin)
             db.session.add(membership)
             db.session.commit()
             db.session.refresh(membership)
@@ -69,12 +78,13 @@ def registersubmit():
             membership.UTR=utr
             membership.Phone=phone
             membership.Mpassword=password
+            membership.IsAdmin = admin
             membership.verified=True
             db.session.commit()
             flash("The MEID: "+str(meid)+'has been updated.')
             return render_template('q1afterregister.html', membership=membership)
     else:
-        return render_template('q1register.html',meid=meid, firstname=firstname,lastname=lastname,email=email,age=age, gender=gender, utr=utr,phone=phone,password=password )
+        return render_template('q1register.html',meid=meid, firstname=firstname,lastname=lastname,email=email,age=age, gender=gender, utr=utr,phone=phone,password=password,admin=admin )
 
 @app.route('/q1log')
 def q1login():
@@ -104,9 +114,12 @@ def afterLogin():
             session['is_admin'] = user.is_admin
             currentHour = datetime.now().hour
             greeting = "morning" if currentHour < 12 else "afternoon"
-            session['greeting']=greeting
-            return render_template('index.html')
-        
+
+            if member.IsAdmin == 'Yes':
+                return render_template('Admin.html', greeting=greeting)
+            elif member.IsAdmin == 'No':
+                render_template('User.html', greeting=greeting)
+
         else:
             flash('Incorrect MEID or Password')
             return render_template('q1login.html',meid=meid,password=password)
@@ -222,6 +235,34 @@ def q1chart3():
 
 
 
+# ---------q2----------
+@app.route('/q2log')
+def q2log():
+    return render_template('challenge_log.html')
+    
+#after log
+@app.route('/q2logsubmit', methods=['GET', 'POST'])
+def q2logSubmit():
+    # Get the user input values
+    c_meid = request.form.get('cmeid')
+    c_pass = request.form.get('cpass')   
+    #check error
+    if not c_meid or not c_pass:
+        flash('You need to input your MEID and password')
+    else:
+        c_member = Member.query.get(c_meid)
+        if c_pass==c_member.MPassword:
+        #save the supplierID and company name into session, 
+            session['c_meid'] = c_meid
+            currentHour = datetime.now().hour
+            greeting = "morning" if currentHour < 12 else "afternoon"
+            filtered_challenges = Challenge.query.filter(Challenge.ChallengerMEID==int(session['meid'])).all()
+            return render_template('challenge_afterlog.html', greeting=greeting, filtered_challenges = filtered_challenges)
+        else:
+            flash('Invalid MEID or Passwords')
+            return render_template('challenge_log.html',cmeid=c_meid, cpass=c_pass)
+
+
                 
 # afterlog -- create a new challenge
 @app.route('/q2create')
@@ -239,6 +280,7 @@ def address():
     else:
         filtered_challenges = Challenge.query.filter(Challenge.ChallengerMEID==int(session['meid'])).all()
         return render_template('address_challenge.html', filtered_challenges = filtered_challenges)
+
 
 ## afterlog -- show chart
 @app.route('/q2graph', methods=['GET', 'POST'])
@@ -277,7 +319,8 @@ def requestSubmit():
 
 @app.route('/allcha', methods=['GET', 'POST'])
 def challengerinfo():
-    filtered_challenges = Challenge.query.filter(Challenge.ChallengerMEID==int(session['meid'])).all()
+    filtered_challenges = Challenge.query.filter(Challenge.ChallengerMEID==int(sessionsession['meid'])).all()
+
     return render_template('challenge_info.html', filtered_challenges = filtered_challenges)
 
 #create new challenge information
