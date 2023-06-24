@@ -17,6 +17,14 @@ def index():
 def about():
     return render_template('about.html')
 
+@app.route('/admin')
+def admin():
+    return render_template('Admin.html')
+
+@app.route('/user')
+def user():
+    return render_template('User.html')
+
 #####-------q1------------
 #q1--register
 @app.route('/q1register')
@@ -35,9 +43,10 @@ def registersubmit():
     age=request.form.get('age')
     gender=request.form.get('gender')
     utr=request.form.get('utr')
+    admin=request.form.get('admin')
     
     error=False
-    if not meid or not email or not password or not firstname or not lastname or not phone or not age or not gender or not utr:
+    if not meid or not email or not password or not firstname or not lastname or not phone or not age or not gender or not utr or not admin:
         flash('The information but lastname is required')
         error=True
     else:
@@ -52,7 +61,7 @@ def registersubmit():
             meid=request.form.get('meid')
             meid=int(meid)
             date=datetime.now()
-            membership=Member(MEID = meid, FirstName=firstname,LastName=lastname,Email=email, Age=age,UTR=utr,Gender=gender,Phone=phone, MPassword=password, DateOfCreation=date)
+            membership=Member(MEID = meid, FirstName=firstname,LastName=lastname,Email=email, Age=age,UTR=utr,Gender=gender,Phone=phone, MPassword=password, DateOfCreation=date, IsAdmin=admin)
             db.session.add(membership)
             db.session.commit()
             db.session.refresh(membership)
@@ -69,12 +78,13 @@ def registersubmit():
             membership.UTR=utr
             membership.Phone=phone
             membership.Mpassword=password
+            membership.IsAdmin = admin
             membership.verified=True
             db.session.commit()
             flash("The MEID: "+str(meid)+'has been updated.')
             return render_template('q1afterregister.html', membership=membership)
     else:
-        return render_template('q1register.html',meid=meid, firstname=firstname,lastname=lastname,email=email,age=age, gender=gender, utr=utr,phone=phone,password=password )
+        return render_template('q1register.html',meid=meid, firstname=firstname,lastname=lastname,email=email,age=age, gender=gender, utr=utr,phone=phone,password=password,admin=admin )
 
 @app.route('/q1log')
 def q1login():
@@ -100,8 +110,10 @@ def afterLogin():
             session['password'] = password
             currentHour = datetime.now().hour
             greeting = "morning" if currentHour < 12 else "afternoon"
-            return render_template('q1afterlogin.html', greeting=greeting)
-        
+            if member.MPassword == 'Yes':
+                return render_template('Admin.html', greeting=greeting)
+            elif member.MPassword == 'No':
+                render_template('User.html', greeting=greeting)
         else:
             flash('Incorrect MEID or Password')
             return render_template('q1login.html',meid=meid,password=password)
