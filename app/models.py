@@ -17,7 +17,7 @@ class Member(db.Model):
     Gender = db.Column(db.String(10), nullable=False)
     UTR = db.Column(db.Float(50), nullable=False)
     DateOfCreation = db.Column(db.Date, nullable=False)
-    IsAdmin = db.Column(db.String(10),nullable=False)
+    is_admin = db.Column(db.Integer,nullable=False)
 
 class Challenge(db.Model):
     CID = db.Column(db.Integer, primary_key=True)
