@@ -33,6 +33,7 @@
   * Author: BootstrapMade.com
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
+
 </head>
 
 <body>
@@ -49,26 +50,65 @@
 
       <nav id="navbar" class="navbar">
         <ul>
+          {%if not session.get('meid'):%}
+            <li>Welcome,Guest!</li>
+          {%else:%}
+            <li>Good {{ session.get('greeting') }}, {{session.get('FristName')}} {{session.get('LastName')}}!</li>
+          {%endif%}
           <li><a class="nav-link scrollto active" href={{url_for('index')}}>Home</a></li>
           <li><a class="nav-link scrollto" href={{url_for('about')}}>About</a></li>
           <li class="dropdown"><a href="#"><span>Register/Log</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
               <li><a href={{url_for('q1register')}}>Register</a></li>
-              <li><a href={{url_for('q1login')}}>Log in</a></li>
-              <li><a href={{url_for('q1modify')}}>Modify individual info</a></li>
-              <li><a href={{url_for('q1delete')}}>Delete individual info</a></li>
-              <li class="dropdown"><a href="#"><span>visualize club members</span> <i class="bi bi-chevron-right"></i></a>
+
+              {%if not session.get('meid'):%}
+                <li><a href={{url_for('q1login')}}>Log in</a></li>
+              {%else:%}
+                <li><a href={{url_for('q1logout')}}>Log out</a></li>
+              {%endif%}
+              
+                <li><a href={{url_for('q1modify')}}>Modify individual info</a></li>
+                <li><a href={{url_for('q1delete')}}>Delete individual info</a></li>
+              
+              <li class="dropdown"><a href="#"><span>Visualize club members</span> <i class="bi bi-chevron-right"></i></a>
                 <ul>
-                  <li><a href={{url_for('q1chart1')}}>visualize club members by Age</a></li>
-                  <li><a href={{url_for('q1chart2')}}>visualize club members by Gender</a></li>
-                  <li><a href={{url_for('q1chart3')}}>visualize club members by UTR</a></li>
+                  <li><a href={{url_for('q1chart1')}}>Visualize club members by Age and Gender</a></li>
+                  <li><a href={{url_for('q1chart3')}}>Visualize club members by UTR</a></li>
                 </ul>
               </li>
+              
             </ul>
           </li>
-          <li><a class="nav-link scrollto" href="{{url_for('q2log')}}">Challenge</a></li>
-          <li><a class="nav-link scrollto" href={{url_for('q1register')}}>Match</a></li>
-          <li><a class="nav-link scrollto" href={{url_for('q1register')}}>Membership</a></li>
+
+          <li class="dropdown"><a href="#"><span>Challenge</span> <i class="bi bi-chevron-down"></i></a>
+          <ul>
+            <li><a href={{url_for('create')}}>Create a new challenge</a></li>
+            <li><a href={{url_for('address')}}>Address challenge</a></li>
+            <li><a href={{url_for('graph')}}>Check your win percentage</a></li>
+          </ul>
+
+
+
+          <li class="dropdown"><a href="#"><span>Match</span> <i class="bi bi-chevron-down"></i></a>
+            <ul>
+              <li><a href={{url_for('q3MAID')}}>Create/Modify a match</a></li>
+              {% if is_admin %}
+              <li><a href={{url_for('q3MAIDdelete')}}>Delete a match</a></li>
+              {%endif%}
+              <li><a href={{url_for('q3MAIDsearch')}}>Search a match</a></li>
+              <li><a href={{url_for('q3player')}}>See a data graph</a></li>
+            </ul>
+          </li>
+
+
+          <li class="dropdown"><a href="#"><span>Membership</span> <i class="bi bi-chevron-down"></i></a>
+            <ul>
+
+              <li><a href={{url_for('MSsearch')}}>Membership Search</a></li>
+              <li><a href={{url_for('MScreate')}}>Membership Create(Modify)</a></li>
+              <li><a href={{url_for("membership_chart",year=2023)}}>Graph</a></li>
+            </ul>
+          </li>
           <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>

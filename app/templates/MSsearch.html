@@ -2,10 +2,38 @@
 
 {% block title %}Membership Search{% endblock title %} 
 
+{% block head %}
+  <style>
+    /* CSS for Membership ID label */
+    .col-form-label {
+      font-weight: bold;
+      color: #333;
+    }
+
+    /* CSS for Membership ID input */
+    .form-control {
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 8px;
+      width: 80%;
+    }
+
+    /* CSS for the Submit button */
+    .btn-success {
+      background-color: #28a745;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+
+
+{% endblock head %}
 
 {% block content %}
 <main id="main">
-
     <section id="breadcrumbs" class="breadcrumbs">
         <div class="container">
           <ol>
@@ -35,7 +63,8 @@
             </div>
 
 
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-success">Submit</button>
+            
           </form>
 
           <!--jinjia-->
@@ -51,7 +80,6 @@
 
         </div>
       </section>
- 
 
 
   </main><!-- End #main -->

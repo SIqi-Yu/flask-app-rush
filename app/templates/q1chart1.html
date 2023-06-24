@@ -3,34 +3,168 @@
 {%block content%}
 <script src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js"></script>
 <script src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.candy.js"></script>
+
 <script>
-    var data = JSON.parse({{chartData | tojson | safe}})
-    const dataSource = {
-        chart: {
-          caption: "Lead sources by industry",
-          yaxisname: "Number of Members",
-          xaxisname: "Gender",
-          aligncaptionwithcanvas: "0",
-          plottooltext: "<b>$dataValue</b> leads received",
-          theme: "candy"
-        },
-        data: data
-    };
-      
-      FusionCharts.ready(function() {
-        var myChart = new FusionCharts({
-          type: "column2d",
-          renderAt: "chart-container",
-          width: "100%",
-          height: "100%",
-          dataFormat: "json",
-          dataSource
-        }).render();
-      });
+  //var chartData = {{ chartData | safe }};
+   // var chartData = JSON.parse({{chartData | tojson | safe}})
+   var chartData = {{ chartData | safe }};
+   console.log('chartData:', chartData);
 
-      
+   var categories = [];
+   var series = {
+     'Female': [],
+     'Male': []
+   };
+ 
 
+   chartData.forEach(function(item) {
+    var category = item.category || item.Category;
+    var seriesName = item.series || item.Series;
+    var value = item.value || item.Value;
+    var age = item.category;
+
+
+  var ageGroup;
+  if (age <= 20) {
+    ageGroup = '0-20';
+  } else if (age <= 40) {
+    ageGroup = '21-40';
+  } else if (age <= 60) {
+    ageGroup = '41-60';
+  }  else {
+    ageGroup = '60+';
+  }
+
+  var existingCategory = categories.find(function(cat) {
+    return cat.label === ageGroup;
+  });
+
+  //category.label='0-20'  category.value=2
+  if (existingCategory) {
+    existingCategory.value += value;
+  } else {
+    categories.push({ label: ageGroup, value: value });
+  }
+
+  
+
+ 
+  if (seriesName === 'Female'|| seriesName === 'female' ) {
+    //seires['Female'].ageGroup='0-20' seires['Female'].value=2
+    var existingFemaleSeries = series['Female'].find(function(data) {
+      return data.label === ageGroup;
+    });
+
+    if (existingFemaleSeries) {
+      existingFemaleSeries.value += value;
+    } 
+    else {
+
+      series['Female'].push({ label: ageGroup, value: value });
+    }
+  } 
+
+
+  else if (seriesName === 'Male'|| seriesName === 'male') {
+    var existingMaleSeries = series['Male'].find(function(data) {
+      return data.label === ageGroup;
+    });
+
+    if (existingMaleSeries) {
+      existingMaleSeries.value += value;
+    } else {
+
+        series['Male'].push({label: ageGroup, value: value});
+
+    }
+  }
+});
+// Add missing age groups with a count of 0 for each gender
+var ageGroups = ['0-20', '21-40', '41-60', '60+'];
+
+ageGroups.forEach(function(ageGroup) {
+  var existingFemaleSeries = series['Female'].find(function(data) {
+    return data.label === ageGroup;
+  });
+
+  if (!existingFemaleSeries) {
+    series['Female'].push({ label: ageGroup, value: 0 });
+  }
+
+  var existingMaleSeries = series['Male'].find(function(data) {
+    return data.label === ageGroup;
+  });
+
+  if (!existingMaleSeries) {
+    series['Male'].push({ label: ageGroup, value: 0 });
+  }
+});
+
+const categoryLabels = categories.map(function(cat) {
+  return { label: cat.label };
+});
+
+const femaleData = categoryLabels.map(function(cat) {
+  var existingData = series['Female'].find(function(data) {
+    return data.label === cat.label;
+  });
+
+  return { value: existingData ? existingData.value : 0 };
+});
+
+const maleData = categoryLabels.map(function(cat) {
+  var existingData = series['Male'].find(function(data) {
+    return data.label === cat.label;
+  });
+
+  return { value: existingData ? existingData.value : 0 };
+});
+
+
+   const dataSource = {
+     chart: {
+       caption: "Member Constitution",
+       subcaption: "Age and Gender",
+       plottooltext: "$label won <b>$dataValue</b> medals in $seriesName",
+       theme: "candy"
+     },
+     categories: [
+       {
+         category: categories
+       }
+     ],
+     dataset: [
+       {
+         seriesname: "Female",
+         data: femaleData
+       },
+       {
+         seriesname: "Male",
+         data: maleData
+       }
+     ]
+   };
+   console.log('categories:', categories);
+   console.log('series:', series['Male']);
+
+ 
+   FusionCharts.ready(function() {
+     var chart = new FusionCharts({
+       type: "msbar3d",
+       renderAt: "chart-container",
+       width: "80%",
+       height: "400",
+       dataFormat: "json",
+       dataSource: dataSource
+     });
+ 
+     chart.render();
+   });
+ </script>
+ 
+    
 </script>
+
 <main id="main">
   <section class="inner-page">
     <div class="container">
@@ -42,24 +176,30 @@
         </ol>
         <h2>Login Page</h2>
         <br>
-        <br>
-        <br>
+        
+
         <nav id="navbar" class="navbar bg-light">
           <ul>
             <li><a class="nav-link scrollto" href={{url_for('q1register')}}>Register</a></li>
+            {%if not session.get('meid'):%}
             <li><a class="nav-link scrollto" href={{url_for('q1login')}}>Log in</a></li>
+            {%else:%}
+            <li><a class="nav-link scrollto" href={{url_for('q1logout')}}>Log out</a></li>
+            {%endif%}
             <li><a class="nav-link scrollto" href={{url_for('q1modify')}}>Modify your information</a></li>
             <li><a class="nav-link scrollto" href={{url_for('q1delete')}}>Delete your information</a></li>
             <li class="dropdown"><a href="#"><span>Charts</span> <i class="bi bi-chevron-down"></i></a>
               <ul>
-                <li><a class="nav-link scrollto active" href={{url_for('q1chart1')}}>visualize club members by Age</a></li>
-                <li><a class="nav-link scrollto" href={{url_for('q1chart2')}}>visualize club members by Gender</a></li>
+                <li><a class="nav-link scrollto active" href={{url_for('q1chart1')}}>visualize club members by Age and Gender</a></li>
+
                 <li><a class="nav-link scrollto" href={{url_for('q1chart3')}}>visualize club members by UTR</a></li>
               </ul>
             </li>
           </ul>
         </nav>
-        <div id="chart-container"></div>
+        <br>
+        <br>
+        <div id="chart-container" style="text-align: center;"></div>
       {% with messages = get_flashed_messages() %}
         <ul>
         {% for message in messages %}

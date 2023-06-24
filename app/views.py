@@ -108,21 +108,37 @@ def afterLogin():
         elif password==member.MPassword:
             session['meid'] = meid
             session['password'] = password
+            user=Member.query.get(meid)
+            session['FristName'] = user.FirstName
+            session['LastName'] = user.LastName
+            session['is_admin'] = user.is_admin
             currentHour = datetime.now().hour
             greeting = "morning" if currentHour < 12 else "afternoon"
+
             if member.IsAdmin == 'Yes':
                 return render_template('Admin.html', greeting=greeting)
             elif member.IsAdmin == 'No':
                 render_template('User.html', greeting=greeting)
+
         else:
             flash('Incorrect MEID or Password')
             return render_template('q1login.html',meid=meid,password=password)
+
+@app.route('/q1logout')
+def q1logout():
+    session.clear()
+    return render_template('index.html')
+
 @app.route('/q1modify')
 def q1modify():
-    return render_template('q1modify.html')
+    if not session.get('meid'):
+        return render_template('q1login.html')
+    else:
+        return render_template('q1modify.html')
 
 @app.route('/aftermodify', methods=['GET','POST'])
 def aftermodify():
+    
     meid=request.form.get('meid')
     email=request.form.get('email')
     password1=request.form.get('password1')
@@ -167,7 +183,10 @@ def aftermodify():
             return render_template('q1modify.html', meid=meid, password1=password1, password2=password2, age=age, email=email, firstname=firstname, lastname=lastname,gender=gender)
 @app.route('/q1delete')
 def q1delete():
-    return render_template('q1delete.html')
+    if not session.get('meid'):
+        return render_template('q1login.html')
+    else:
+        return render_template('q1delete.html')
 
 @app.route('/afterdelete', methods=['GET','POST'])
 def afterdelete():
@@ -191,25 +210,20 @@ def afterdelete():
             db.session.delete(member)
             db.session.commit()
             flash('Your Information has been deleted')
-            return render_template('base.html')
+            session.clear()
+            return render_template('index.html')
+        
         else:
             flash('Incorrect MEID or Password')
             return render_template('q1delete.html',meid=meid,password=password)     
 
 @app.route('/q1chart1')
 def q1chart1():
-    result=db.session.query(Member.Gender.label('label'), func.count(Member.MEID).label('value')).group_by('Gender')
-    chartData1 = [row._asdict() for row in result]
-    chartData1 = json.dumps(chartData1)
-    return render_template('q1chart1.html', chartData = chartData1)
+    result = db.session.query(Member.Age.label('category'), Member.Gender.label('series'), func.count(Member.MEID).label('value')).group_by(Member.Age, Member.Gender)
+    chartData = [row._asdict() for row in result]
+    chartData = json.dumps(chartData)
+    return render_template('q1chart1.html', chartData=chartData)
 
-@app.route('/q1chart2')
-def q1chart2():
-    result=db.session.query(func.count(Member.MEID).label('value')).group_by('Age')
-    chartData2 = [row._asdict() for row in result]
-    chartData2 = json.dumps(chartData2)
-     
-    return render_template('q1chart2.html', chartData = chartData2)
 
 @app.route('/q1chart3')
 def q1chart3():
@@ -218,7 +232,6 @@ def q1chart3():
     chartData3 = json.dumps(chartData3)
      
     return render_template('q1chart3.html', chartData = chartData3)
-
 
 
 
@@ -249,32 +262,43 @@ def q2logSubmit():
             flash('Invalid MEID or Passwords')
             return render_template('challenge_log.html',cmeid=c_meid, cpass=c_pass)
 
+
                 
 # afterlog -- create a new challenge
 @app.route('/q2create')
 def create():
-    return render_template('create_challenge.html')
+    if not session.get('meid'):
+        return render_template('q1login.html')
+    else:
+        return render_template('create_challenge.html')
 
 ## afterlog -- address challenge request
 @app.route('/q2address')
 def address():
-    filtered_challenges = Challenge.query.filter(Challenge.ChallengerMEID==int(session['meid'])).all()
-    return render_template('address_challenge.html', filtered_challenges = filtered_challenges)
+    if not session.get('meid'):
+        return render_template('q1login.html')
+    else:
+        filtered_challenges = Challenge.query.filter(Challenge.ChallengerMEID==int(session['meid'])).all()
+        return render_template('address_challenge.html', filtered_challenges = filtered_challenges)
+
 
 ## afterlog -- show chart
 @app.route('/q2graph', methods=['GET', 'POST'])
 def graph():
-    c_meid = session['meid']
-    result_win = db.session.query(Tmatch.WinnerMEID.label('Wins'), 
-                                  func.count(Tmatch.WinnerMEID).label('value')).filter(Tmatch.WinnerMEID==c_meid)
-    result_lose = db.session.query(Tmatch.LoserMEID.label('Loses'), 
-                                   func.count(Tmatch.LoserMEID).label('value')).filter(Tmatch.LoserMEID==c_meid)
+    if not session.get('meid'):
+        return render_template('q1login.html')
+    else:
+        meid = session.get('meid')
+        result_win = db.session.query(Tmatch.WinnerMEID.label('Wins'), 
+                                  func.count(Tmatch.WinnerMEID).label('value')).filter(Tmatch.WinnerMEID==meid)
+        result_lose = db.session.query(Tmatch.LoserMEID.label('Loses'), 
+                                   func.count(Tmatch.LoserMEID).label('value')).filter(Tmatch.LoserMEID==meid)
     
-    q2chartData1 = [row._asdict() for row in result_win]
-    q2chartData2 = [row._asdict() for row in result_lose]
-    q2chartData = q2chartData1 + q2chartData2
-    q2chartData = json.dumps(q2chartData)
-    return render_template('challenge_graph.html', q2chartData=q2chartData)
+        q2chartData1 = [row._asdict() for row in result_win]
+        q2chartData2 = [row._asdict() for row in result_lose]
+        q2chartData = q2chartData1 + q2chartData2
+        q2chartData = json.dumps(q2chartData)
+        return render_template('challenge_graph.html', q2chartData=q2chartData)
 
 
 ## address request -- delete row in database
@@ -296,6 +320,7 @@ def requestSubmit():
 @app.route('/allcha', methods=['GET', 'POST'])
 def challengerinfo():
     filtered_challenges = Challenge.query.filter(Challenge.ChallengerMEID==int(sessionsession['meid'])).all()
+
     return render_template('challenge_info.html', filtered_challenges = filtered_challenges)
 
 #create new challenge information
@@ -361,6 +386,8 @@ def challengeFormSubmit():
             return render_template('create_info.html', challenge=challenge)
     else:
         return render_template('create_challenge.html',error=error, cid=c_id, challengerID=challenger_meid, challengedID=challenged_meid, date=c_date, note=c_note)
+
+
 
 
 
@@ -559,6 +586,7 @@ def q3searchMEIDSubmit():
         q3chartData1 = [row._asdict() for row in win]
         q3chartData2 = [row._asdict() for row in lose]
         q3chartData = json.dumps(q3chartData1 + q3chartData2)
+
         return render_template('Q3.6_Graph.html', q3chartData=q3chartData)
     
     return render_template('Q3.5_Player.html')
@@ -567,14 +595,14 @@ def q3searchMEIDSubmit():
  
  
 # Question 4
-@app.route("/MSbase")
-def MSbase():
-    return render_template('MSbase.html')
+
 
 @app.route("/q4.1")
 def MScreate():
-    
-    return render_template('MScreate.html')
+    if not session.get('meid'):
+        return render_template('q1login.html')
+    else:
+        return render_template('MScreate.html')
 
 @app.route("/membershipCreate",methods=['GET','POST'])
 def membershipCreate():
@@ -646,8 +674,10 @@ def membershipCreate():
 
 @app.route("/q4.2")
 def MSsearch():
-    
-    return render_template('MSsearch.html')
+    if not session.get('meid'):
+        return render_template('q1login.html')
+    else:
+        return render_template('MSsearch.html')
 
 @app.route("/MembershipSearch",methods=['GET','POST'])
 def MembershipSearch():
@@ -686,11 +716,11 @@ def MembershipDelete():
 @app.route("/membership_chart/<year>")
 def membership_chart(year):
     # Get the membership records for the given year
-    memberships = membership.query.filter(db.func.extract('year', membership.PaidDate) == year).all()
+    memberships = membership.query.filter((db.func.extract('year', membership.PaidDate) == year) | (membership.PaidDate == None)).all()
 
     # Count the number of members who have paid and who have not paid
-    members_paid = sum(1 for membership in memberships if membership.DueDate)
-    members_not_paid = sum(1 for membership in memberships if not membership.DueDate)
+    members_paid = sum(1 for membership in memberships if membership.PaidDate)
+    members_not_paid = sum(1 for membership in memberships if not membership.PaidDate)
 
     # Prepare the chart data
     chart_data = {
@@ -704,5 +734,6 @@ def membership_chart(year):
         ]
     }
     chart_data = json.dumps(chart_data)
+    flash(members_not_paid)
 
     return render_template("MSgraph.html", chart_data=chart_data)
