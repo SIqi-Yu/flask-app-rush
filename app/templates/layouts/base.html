@@ -53,7 +53,11 @@
           {%if not session.get('meid'):%}
             <li>Welcome,Guest!</li>
           {%else:%}
-            <li>Good {{ session.get('greeting') }}, {{session.get('FristName')}} {{session.get('LastName')}}!</li>
+          {%if session.get('is_admin')=="YES"%}
+            <li>Good {{ session.get('greeting') }}, Administor {{session.get('FristName')}} {{session.get('LastName')}}!</li>
+          {%else%}
+            <li>Good {{ session.get('greeting') }}, User {{session.get('FristName')}} {{session.get('LastName')}}!</li>
+          {%endif%}
           {%endif%}
           <li><a class="nav-link scrollto active" href={{url_for('index')}}>Home</a></li>
           <li><a class="nav-link scrollto" href={{url_for('about')}}>About</a></li>
@@ -68,7 +72,9 @@
               {%endif%}
               
                 <li><a href={{url_for('q1modify')}}>Modify individual info</a></li>
+                {% if session.get('is_admin')=='YES' %}
                 <li><a href={{url_for('q1delete')}}>Delete individual info</a></li>
+                {%endif%}
               
               <li class="dropdown"><a href="#"><span>Visualize club members</span> <i class="bi bi-chevron-right"></i></a>
                 <ul>
@@ -92,14 +98,17 @@
           <li class="dropdown"><a href="#"><span>Match</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
               <li><a href={{url_for('q3MAID')}}>Create/Modify a match</a></li>
-              {% if is_admin %}
+              {% if session.get('is_admin')=='YES' %}
               <li><a href={{url_for('q3MAIDdelete')}}>Delete a match</a></li>
               {%endif%}
               <li><a href={{url_for('q3MAIDsearch')}}>Search a match</a></li>
+              {% if session.get('is_admin')=='YES' %}
               <li><a href={{url_for('q3player')}}>See a data graph</a></li>
+              {%endif%}
             </ul>
           </li>
 
+          {% if session.get('is_admin')=='YES' %}
 
           <li class="dropdown"><a href="#"><span>Membership</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
@@ -109,6 +118,7 @@
               <li><a href={{url_for("membership_chart",year=2023)}}>Graph</a></li>
             </ul>
           </li>
+          {%endif%}
 
           <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
         </ul>
@@ -179,21 +189,25 @@
 
           </div>
         </div>
+        
 
-        <div class="col-sm-6 col-md-3 col-lg-2">
-          <div class="list-menu">
+          <div class="col-sm-6 col-md-3 col-lg-2">
+            <div class="list-menu">
 
             <h4>Membership information</h4>
 
             <ul class="list-unstyled">
               <li><a href="#">Create/Modify Membership</a></li>
+              
               <li><a href="#">Delete Membership</a></li>
+              
               <li><a href="#">Search for a membership invoice</a></li>
               <li><a href="#">visualize member payment status </a></li>
             </ul>
 
+            </div>
           </div>
-        </div>
+          
 
       </div>
     </div>

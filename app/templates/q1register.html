@@ -112,6 +112,26 @@
             </select>
           </label>
         </div>
+        
+        <div class="row mb-3">
+          <label for="" class="col-sm-2 col-form-label">Gender:
+            <select name="is_admin" id="is_admin" class="form-select" value="{{admin}}">
+              <option value='YES'
+              {% if gender=='YES' %}
+               selected
+              {% endif %}
+              >YES</option>
+              <option value='NO'
+              {% if gender=='NO' %}
+               selected
+              {% endif %}
+              >NO</option>
+            </select>
+          </label>
+        </div>
+
+ 
+
         <button type="submit" class="btn btn-success">Submit</button>
       </form>
 
