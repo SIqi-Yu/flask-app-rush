@@ -110,9 +110,9 @@ def afterLogin():
             session['password'] = password
             currentHour = datetime.now().hour
             greeting = "morning" if currentHour < 12 else "afternoon"
-            if member.MPassword == 'Yes':
+            if member.IsAdmin == 'Yes':
                 return render_template('Admin.html', greeting=greeting)
-            elif member.MPassword == 'No':
+            elif member.IsAdmin == 'No':
                 render_template('User.html', greeting=greeting)
         else:
             flash('Incorrect MEID or Password')
@@ -243,7 +243,7 @@ def q2logSubmit():
             session['c_meid'] = c_meid
             currentHour = datetime.now().hour
             greeting = "morning" if currentHour < 12 else "afternoon"
-            filtered_challenges = Challenge.query.filter(Challenge.ChallengerMEID==int(session['c_meid'])).all()
+            filtered_challenges = Challenge.query.filter(Challenge.ChallengerMEID==int(session['meid'])).all()
             return render_template('challenge_afterlog.html', greeting=greeting, filtered_challenges = filtered_challenges)
         else:
             flash('Invalid MEID or Passwords')
@@ -258,13 +258,13 @@ def create():
 ## afterlog -- address challenge request
 @app.route('/q2address')
 def address():
-    filtered_challenges = Challenge.query.filter(Challenge.ChallengerMEID==int(session['c_meid'])).all()
+    filtered_challenges = Challenge.query.filter(Challenge.ChallengerMEID==int(session['meid'])).all()
     return render_template('address_challenge.html', filtered_challenges = filtered_challenges)
 
 ## afterlog -- show chart
 @app.route('/q2graph', methods=['GET', 'POST'])
 def graph():
-    c_meid = session.get('c_meid')
+    c_meid = session['meid']
     result_win = db.session.query(Tmatch.WinnerMEID.label('Wins'), 
                                   func.count(Tmatch.WinnerMEID).label('value')).filter(Tmatch.WinnerMEID==c_meid)
     result_lose = db.session.query(Tmatch.LoserMEID.label('Loses'), 
@@ -290,12 +290,12 @@ def requestSubmit():
         else:
             db.session.delete(delete_challenge)
             db.session.commit()
-            filtered_challenges = Challenge.query.filter(Challenge.ChallengerMEID==int(session['c_meid'])).all()
+            filtered_challenges = Challenge.query.filter(Challenge.ChallengerMEID==int(session['meid'])).all()
             return render_template('address_challenge.html',filtered_challenges=filtered_challenges)
 
 @app.route('/allcha', methods=['GET', 'POST'])
 def challengerinfo():
-    filtered_challenges = Challenge.query.filter(Challenge.ChallengerMEID==int(session['c_meid'])).all()
+    filtered_challenges = Challenge.query.filter(Challenge.ChallengerMEID==int(sessionsession['meid'])).all()
     return render_template('challenge_info.html', filtered_challenges = filtered_challenges)
 
 #create new challenge information
