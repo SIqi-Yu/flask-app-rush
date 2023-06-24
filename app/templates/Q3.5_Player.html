@@ -30,16 +30,16 @@
             <br>
             <br>
             <br>
-            <h3>Show your winning and losing data in a graph.</h3>
+            <h3>Show member winning and losing data in a graph.</h3>
             <br>
             <form method="post" action="{{url_for('q3searchMEIDSubmit')}}">
               <div class="row mb-3">
-                <label for="searchMEID" class="col-sm-2 col-form-label"> Enter your MEID:</label>
+                <label for="searchMEID" class="col-sm-2 col-form-label"> Enter MEID:</label>
                 <div class="col-sm-10">
                   <input type="number" class="form-control" id="q3smeid" name="q3smeid">
                 </div>
               </div>
-                <button type="submit" class="btn btn-success">Sign in</button>
+                <button type="submit" class="btn btn-success">GO</button>
             </form>
 
             {% with messages = get_flashed_messages() %}
