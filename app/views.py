@@ -673,11 +673,11 @@ def MembershipDelete():
 @app.route("/membership_chart/<year>")
 def membership_chart(year):
     # Get the membership records for the given year
-    memberships = membership.query.filter(db.func.extract('year', membership.PaidDate) == year).all()
+    memberships = membership.query.filter((db.func.extract('year', membership.PaidDate) == year) | (membership.PaidDate == None)).all()
 
     # Count the number of members who have paid and who have not paid
-    members_paid = sum(1 for membership in memberships if membership.DueDate)
-    members_not_paid = sum(1 for membership in memberships if not membership.DueDate)
+    members_paid = sum(1 for membership in memberships if membership.PaidDate)
+    members_not_paid = sum(1 for membership in memberships if not membership.PaidDate)
 
     # Prepare the chart data
     chart_data = {
@@ -691,5 +691,6 @@ def membership_chart(year):
         ]
     }
     chart_data = json.dumps(chart_data)
+    flash(members_not_paid)
 
     return render_template("MSgraph.html", chart_data=chart_data)
