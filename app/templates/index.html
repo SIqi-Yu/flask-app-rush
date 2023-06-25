@@ -19,13 +19,7 @@
       {%else:%}
         <a href={{url_for('q1logout')}} class="btn-get-started scrollto">Log out</a>
       {%endif%}
-      <div class="btns">
-        <a href={{url_for('q1login')}}><i class="fa fa-apple fa-3x"></i> Challenge</a>
 
-        <a href={{url_for('q1login')}}><i class="fa fa-apple fa-3x"></i> Tmatch</a>
-        {%if session['is_admin']=='YES'%}
-        <a href={{url_for("q1login")}}><i class="fa fa-apple fa-3x"></i> Membership</a>
-        {%endif%}
 
         {% with messages = get_flashed_messages() %} <!-- function: flash显示的message储存在message里 -->
         <ul>

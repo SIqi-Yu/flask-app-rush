@@ -54,7 +54,7 @@
             <li>Welcome,Guest!</li>
           {%else:%}
           {%if session.get('is_admin')=="YES"%}
-            <li>Good {{ session.get('greeting') }}, Administor {{session.get('FristName')}} {{session.get('LastName')}}!</li>
+            <li>Good {{ session.get('greeting') }}, Administrator {{session.get('FristName')}} {{session.get('LastName')}}!</li>
           {%else%}
             <li>Good {{ session.get('greeting') }}, User {{session.get('FristName')}} {{session.get('LastName')}}!</li>
           {%endif%}

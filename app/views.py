@@ -80,6 +80,7 @@ def registersubmit():
 
 @app.route('/q1log')
 def q1login():
+    flash('For Administrator:  meid:3  password:00000    For User:  meid:1  password:1234567')
     return render_template('q1login.html')
 
 @app.route('/afterlogin', methods=['GET','POST'])
@@ -334,7 +335,7 @@ def challengeFormSubmit():
             db.session.commit()
             db.session.refresh(challenge)
             flash('A new challenge with CID = '+str(challenge.CID)+' has been added')
-            return render_template('challenge_info.html', challenge=challenge)
+            return render_template('create_info.html', challenge=challenge)
         else:
             challenge=Challenge.query.get(c_id)
             challenge.CID = c_id
@@ -358,8 +359,11 @@ def challengeFormSubmit():
 # Question 3 Start
 @app.route('/q3MAID')
 def q3MAID():
-    challenges = Challenge.query.all()
-    return render_template('Q3.1_MAID.html', q3allchallenges=challenges)
+    if not session.get('meid'):
+        return render_template('q1login.html')
+    else:
+        challenges = Challenge.query.all()
+        return render_template('Q3.1_MAID.html', q3allchallenges=challenges)
 
 @app.route('/q3MAIDsubmit', methods=['GET', 'POST'])
 def q3MAIDSubmit():
@@ -514,8 +518,11 @@ def q3deleteMAIDSubmit():
 
 @app.route('/q3search')
 def q3MAIDsearch():
-    maid = Tmatch.query.all()
-    return render_template('Q3.4_Search.html', q3allmaid=maid)
+    if not session.get('meid'):
+        return render_template('q1login.html')
+    else:
+        maid = Tmatch.query.all()
+        return render_template('Q3.4_Search.html', q3allmaid=maid)
 
 @app.route('/q3searchsubmit', methods=['GET', 'POST'])
 def q3searchMAIDSubmit():
@@ -532,7 +539,10 @@ def q3searchMAIDSubmit():
     
 @app.route('/q3player')
 def q3player():
-    return render_template('Q3.5_Player.html')
+    if not session.get('meid'):
+        return render_template('q1login.html')
+    else:
+        return render_template('Q3.5_Player.html')
 
 @app.route('/q3playersubmit', methods=['GET', 'POST'])
 def q3searchMEIDSubmit():
@@ -582,6 +592,10 @@ def membershipCreate():
     if not meid:
         flash("The Member ID is required")
         error=True
+    if not Member.query.get(meid):
+        flash("The Member ID not exists")
+        error=True
+        
     if not startdate:
         flash("The startdate is required")
         error=True
@@ -598,9 +612,8 @@ def membershipCreate():
         flash("The amount is required")
         error=True
     if not paiddate:
-        flash("The paiddate is required")
-        error=True
-        
+        paiddate=None
+
 
     if not error:
         if not msid:
