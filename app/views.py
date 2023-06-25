@@ -69,7 +69,7 @@ def registersubmit():
             membership.Gender=gender
             membership.UTR=utr
             membership.Phone=phone
-            membership.Mpassword=password
+            membership.MPassword=password
             membership.is_admin = admin
             membership.verified=True
             db.session.commit()
@@ -164,7 +164,7 @@ def aftermodify():
             membership.Age = age
             membership.Gender=gender
             membership.Phone=phone
-            membership.Mpassword=password2
+            membership.MPassword=password2
             membership.verified=True
             db.session.commit()
             flash("The Information of MEID: "+str(meid)+'has been updated.')

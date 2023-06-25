@@ -62,14 +62,17 @@
       <div class="row mb-3">
         <label for="CID" class="col-sm-2 col-form-label">CID you want to delete:</label>
         <div class="col-sm-10">
-          <input type="number" name='cid' class="form-control" id="cid" name="cid" value="{{cid}}">
+          <div class="input-group">
+            <input type="number" name="cid" class="form-control" id="cid" value="{{ cid }}" style="max-width: 220px;">
+            
+          </div>
         </div>
       </div>
       <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <button  class="btn btn-danger me-md-2" type="submit">Delete</button>
+        {% include 'modal.html' %}
       </div>
       <br>
-      <h3>If you want to accept the challenge, you can click to check all challenge.</h3>
+      <h3>• If you want to accept the challenge, you can click to check all challenge.</h3>
       <div class="d-grid gap-2 d-md-flex justify-content-md-end">
         <a href={{url_for('challengerinfo')}} class="btn btn-success me-md-2">Accept</a>
       </div>
